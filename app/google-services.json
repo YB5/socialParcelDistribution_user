@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "733326955073",
+    "firebase_url": "https://socialparceldistributionuser.firebaseio.com",
+    "project_id": "socialparceldistributionuser",
+    "storage_bucket": "socialparceldistributionuser.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733326955073:android:0b6be18ea274de98db6cc0",
+        "android_client_info": {
+          "package_name": "com.example.socialparceldistribution_user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "733326955073-k721efqr1388fn55mbflfmibnbrhqc64.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.socialparceldistribution_user",
+            "certificate_hash": "10508ad158fbce695cc08d65a0bb155026ba5221"
+          }
+        },
+        {
+          "client_id": "733326955073-jjj3qehcelvjrpe618p8f9lrh767lp6l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABIpLuglc9qsN0jWn4xT-bZeSyjQs1Jak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "733326955073-jjj3qehcelvjrpe618p8f9lrh767lp6l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">socialParcelDistribution_user</string>
+    <string name="enter_full_name">enter full name</string>
+    <string name="enter_password">enter password</string>
+    <string name="enter_email">enter email</string>
 </resources>
+
+
+

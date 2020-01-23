@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:id="@+id/linearLayout"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Button
@@ -42,6 +43,12 @@
         android:hint="@string/enter_email"
         android:inputType="textWebEmailAddress"
         android:id="@+id/et_email"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="current user"
+        android:id="@+id/user_tv"/>
 
 
 

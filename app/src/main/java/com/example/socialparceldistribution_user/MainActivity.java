@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView userTv = findViewById(R.id.user_tv);
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {//sign up or sign in
-                    if (!fullName.isEmpty()) { //sign up - update profile with full name
+                    if (fullName!=null&&!fullName.isEmpty()) { //sign up - update profile with full name
 
                         user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(fullName).build()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

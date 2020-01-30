@@ -1,4 +1,4 @@
-package com.example.socialparceldistribution_user.ui.slideshow;
+package com.example.socialparceldistribution_user.ui.user_parcels;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.socialparceldistribution_user.R;
 
-public class SlideshowFragment extends Fragment {
+public class UserParcelsFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
+    private UserParcelsViewModel viewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(this, new Observer<String>() {
+        viewModel =
+                ViewModelProviders.of(this).get(UserParcelsViewModel.class);
+        View root = inflater.inflate(R.layout.user_parcels, container, false);
+        final TextView textView = root.findViewById(R.id.user_parcels_tv);
+        viewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

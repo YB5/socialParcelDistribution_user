@@ -1,16 +1,16 @@
-package com.example.socialparceldistribution_user.ui.tools;
+package com.example.socialparceldistribution_user.ui.user_parcels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ToolsViewModel extends ViewModel {
+public class UserParcelsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public ToolsViewModel() {
+    public UserParcelsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is tools fragment");
+        mText.setValue("This is user parcels fragment");
     }
 
     public LiveData<String> getText() {

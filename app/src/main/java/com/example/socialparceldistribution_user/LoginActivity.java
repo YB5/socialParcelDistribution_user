@@ -20,6 +20,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
@@ -60,9 +63,9 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                           // Toast.makeText(LoginActivity.this,"successful, welcome!!!",Toast.LENGTH_LONG).show();
+                            // Toast.makeText(LoginActivity.this,"successful, welcome!!!",Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("username",fullName);
+                            intent.putExtra("username", fullName);
                             startActivity(intent);
                         } else {
                             Snackbar.make(constraintLayout, "unsuccess to sign-up", Snackbar.LENGTH_LONG).show();
@@ -86,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("username",firebaseAuth.getCurrentUser().getDisplayName());
+                            intent.putExtra("username", firebaseAuth.getCurrentUser().getDisplayName());
                             startActivity(intent);
                         } else {
                             Snackbar.make(constraintLayout, "unsuccess to sign-in", Snackbar.LENGTH_LONG).show();
@@ -96,12 +99,22 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        Button quickEntering = findViewById(R.id.bt_enter);
+        quickEntering.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fullNameEt.setText("iii");
+                passwordEt.setText("123456");
+                emailEt.setText("u@u.com");
+            }
+        });
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 // TextView userTv = findViewById(R.id.user_tv);
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
-                userName=user.getDisplayName();
+                userName = user.getDisplayName();
                 if (user != null) {//sign up or sign in
                     if (fullName != null && !fullName.isEmpty()) { //sign up - update profile with full name
 
@@ -110,8 +123,8 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 fullName = null;
                                 if (task.isSuccessful())
-                                   Toast.makeText(LoginActivity.this,user.getDisplayName()+ " logged in. Welcome!!",Toast.LENGTH_LONG).show();
-                                 //Snackbar.make(linearLayout, user.getDisplayName() + " Welcome!!!", Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, user.getDisplayName() + " logged in. Welcome!!", Toast.LENGTH_LONG).show();
+                                //Snackbar.make(linearLayout, user.getDisplayName() + " Welcome!!!", Snackbar.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -128,8 +141,20 @@ public class LoginActivity extends AppCompatActivity {
     private boolean check_validate() {
         if (fullNameEt.getText().toString().isEmpty() || emailEt.getText().toString().isEmpty() || passwordEt.getText().toString().isEmpty())
             return false;
+        if (passwordEt.getText().length() < 6) {
+            Toast.makeText(this, "password should be at least 6 characters", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        String regex = "^(.+)@(.+)$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(emailEt.getText().toString());
+        if (!matcher.matches()) {
+            Toast.makeText(this, "email must be in valid address format", Toast.LENGTH_LONG).show();
+            return false;
+        }
         return true;
     }
+
 
     @Override
     protected void onStart() {

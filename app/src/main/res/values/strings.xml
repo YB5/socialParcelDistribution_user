@@ -19,6 +19,11 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="sign_up">sign up</string>
+    <string name="parcels_to_deliver">parcels to deliver</string>
+    <string name="my_parcels">my parcels</string>
+    <string name="sign_out">sign out</string>
+    <string name="menu_suggested_parcels">suggested parcels</string>
+    <string name="menu_user_parcels">user parcels</string>
 </resources>
 
 

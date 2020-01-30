@@ -79,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!check_validate()) {
-                    Toast.makeText(LoginActivity.this, "input is not valid, try again", Toast.LENGTH_LONG).show();
                     return;
                 }
                 String password = passwordEt.getText().toString();
@@ -114,8 +113,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 // TextView userTv = findViewById(R.id.user_tv);
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
-                userName = user.getDisplayName();
                 if (user != null) {//sign up or sign in
+                    userName = user.getDisplayName();
                     if (fullName != null && !fullName.isEmpty()) { //sign up - update profile with full name
 
                         user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(fullName).build()).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -139,8 +138,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean check_validate() {
-        if (fullNameEt.getText().toString().isEmpty() || emailEt.getText().toString().isEmpty() || passwordEt.getText().toString().isEmpty())
+        if (fullNameEt.getText().toString().isEmpty() || emailEt.getText().toString().isEmpty() || passwordEt.getText().toString().isEmpty()) {
+            Toast.makeText(LoginActivity.this, "input is not valid, try again", Toast.LENGTH_LONG).show();
             return false;
+        }
         if (passwordEt.getText().length() < 6) {
             Toast.makeText(this, "password should be at least 6 characters", Toast.LENGTH_LONG).show();
             return false;

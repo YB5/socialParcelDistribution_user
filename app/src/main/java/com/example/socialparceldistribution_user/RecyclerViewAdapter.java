@@ -18,7 +18,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private List<Parcel> parcels;
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-    RecyclerViewAdapter(List<Parcel> parcels) {
+    public RecyclerViewAdapter(List<Parcel> parcels) {
         this.parcels = parcels;
     }
     class HistoryParcelViewHolder extends RecyclerView.ViewHolder{

@@ -7,7 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.example.socialparceldistribution.Entities.Parcel;
+import com.example.socialparceldistribution_user.Entities.Parcel;
+
 
 @Database(entities = Parcel.class, version = 1, exportSchema = false)
 @TypeConverters({Parcel.ParcelStatus.class, Parcel.ParcelType.class, Parcel.DateConverter.class, Parcel.LocationConverter.class})

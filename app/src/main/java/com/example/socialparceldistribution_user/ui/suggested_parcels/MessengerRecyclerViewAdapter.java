@@ -1,5 +1,6 @@
 package com.example.socialparceldistribution_user.ui.suggested_parcels;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,8 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
         holder.parcelType.setText(parcel.getParcelType() == null ? "no type" : parcel.getParcelType().toString());
         holder.status.setText(parcel.getParcelStatus() == null ? "no status" : parcel.getParcelStatus().toString());
         holder.volunteer_bt.setText(parcel.getMessengers()!=null&&parcel.getMessengers().containsKey(currentUser)?R.string.cancellation:R.string.suggestOption);
+        holder.volunteer_bt.setBackgroundColor(parcel.getMessengers()!=null&&parcel.getMessengers().containsKey(currentUser)? Color.RED :Color.GREEN);
+
     }
 
     @Override

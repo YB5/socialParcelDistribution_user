@@ -26,7 +26,7 @@ public class Parcel {
         return parcelId;
     }
 
-    @NonNull
+    
     public void setParcelId(String parcelId) {
         this.parcelId = parcelId;
     }
@@ -239,15 +239,12 @@ public class Parcel {
     private Date arrivalDate;
     private String recipientPhone;
     private String recipientEmail;
-
     public HashMap<Person, Boolean> getMessengers() {
         return messengers;
     }
-
     public void setMessengers(HashMap<Person, Boolean> messengers) {
         this.messengers = messengers;
     }
-
     private HashMap<Person, Boolean> messengers;
 
     public static class DateConverter {

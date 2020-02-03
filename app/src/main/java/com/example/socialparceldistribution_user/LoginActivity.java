@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -19,7 +17,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,8 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText fullNameEt;
     private EditText passwordEt;
     private EditText emailEt;
-    private Button signIn_bt;
-    private Button signUp_bt;
     private String fullName;
     private String userName;
 
@@ -44,8 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         fullNameEt = findViewById(R.id.et_full_name);
         passwordEt = findViewById(R.id.et_password);
         emailEt = findViewById(R.id.et_email);
-        signIn_bt = findViewById(R.id.bt_sign_in);
-        signUp_bt = findViewById(R.id.bt_sign_up);
+        Button signIn_bt = findViewById(R.id.bt_sign_in);
+        Button signUp_bt = findViewById(R.id.bt_sign_up);
         final ConstraintLayout constraintLayout = findViewById(R.id.container);
 
 

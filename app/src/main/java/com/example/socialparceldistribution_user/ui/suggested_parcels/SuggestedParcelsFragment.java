@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,7 +26,6 @@ import com.example.socialparceldistribution_user.Entities.Parcel;
 import com.example.socialparceldistribution_user.Entities.UserLocation;
 import com.example.socialparceldistribution_user.R;
 import com.example.socialparceldistribution_user.ui.user_parcels.UserRecyclerViewAdapter;
-import com.example.socialparceldistribution_user.ui.user_parcels.UserParcelsViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,28 +33,26 @@ import java.util.List;
 
 public class SuggestedParcelsFragment extends Fragment {
 
-    private SuggestedParcelsViewModel viewModel;
     private List<Parcel> parcelList = new ArrayList<>();
-    EditText maxDistanceFromMyLoaction;
-    EditText maxDistaceFromDestination;
-    EditText destinationEt;
-    Geocoder geocoder;
-    UserLocation destinatinLocation;
-    UserLocation myLocation;
-    LocationManager locationManager;
-    Button findRelevant;
+    private EditText maxDistanceFromMyLocation;
+    private EditText maxDistanceFromDestination;
+    private EditText destinationEt;
+    private Geocoder geocoder;
+    private UserLocation destinationLocation;
+    private UserLocation myLocation;
+    private LocationManager locationManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        viewModel =
+        SuggestedParcelsViewModel viewModel =
                 ViewModelProviders.of(this).get(SuggestedParcelsViewModel.class);
 
         View root = inflater.inflate(R.layout.parcels_to_deliver, container, false);
         geocoder = new Geocoder(getContext());
         destinationEt = root.findViewById(R.id.dest_address_et);
-        findRelevant = root.findViewById(R.id.findParcels_bt);
-        maxDistaceFromDestination=root.findViewById(R.id.maxFromDestination);
-        maxDistanceFromMyLoaction=root.findViewById(R.id.maxFromCurrentLocation);
+        Button findRelevant = root.findViewById(R.id.findParcels_bt);
+        maxDistanceFromDestination =root.findViewById(R.id.maxFromDestination);
+        maxDistanceFromMyLocation =root.findViewById(R.id.maxFromCurrentLocation);
         final RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
 
         findRelevant.setOnClickListener(new View.OnClickListener() {
@@ -68,9 +64,9 @@ public class SuggestedParcelsFragment extends Fragment {
                     return;}
                 try {
                     List<Address> list = geocoder.getFromLocationName(destinationEt.getText().toString(), 1);
-                    destinatinLocation = new UserLocation(list.get(0).getLatitude(), list.get(0).getLongitude());
+                    destinationLocation = new UserLocation(list.get(0).getLatitude(), list.get(0).getLongitude());
                 } catch (IOException e) {
-                    destinatinLocation = null;
+                    destinationLocation = null;
                     Toast.makeText(getContext(), "Cannot calculate the destination. Please turn on the gps", Toast.LENGTH_LONG).show();
                 }
 
@@ -86,9 +82,9 @@ public class SuggestedParcelsFragment extends Fragment {
 //
 //        try {
 //            List<Address> list = geocoder.getFromLocationName(destinationEt.getText().toString(), 1);
-//            destinatinLocation = new UserLocation(list.get(0).getLatitude(), list.get(0).getLongitude());
+//            destinationLocation = new UserLocation(list.get(0).getLatitude(), list.get(0).getLongitude());
 //        } catch (IOException e) {
-//            destinatinLocation = null;
+//            destinationLocation = null;
 //            Toast.makeText(getContext(), "Cannot calculate the destination. Please turn on the gps", Toast.LENGTH_LONG).show();
 //        }
 //
@@ -115,10 +111,10 @@ public class SuggestedParcelsFragment extends Fragment {
     private List<Parcel> myFilter(List<Parcel> parcels) {
         List<Parcel> filteredList = new ArrayList<>();
         //if no filter determined:
-        if(maxDistaceFromDestination.getText().toString().isEmpty()||maxDistaceFromDestination.getText()==null)
+        if(maxDistanceFromDestination.getText().toString().isEmpty()|| maxDistanceFromDestination.getText()==null)
             return parcels;
-        double maxDistFromLocation = Double.parseDouble(maxDistanceFromMyLoaction.getText().toString());
-        double maxDistFromDestination = Double.parseDouble(maxDistaceFromDestination.getText().toString());
+        double maxDistFromLocation = Double.parseDouble(maxDistanceFromMyLocation.getText().toString());
+        double maxDistFromDestination = Double.parseDouble(maxDistanceFromDestination.getText().toString());
 
         getLocation();
         if (myLocation == null) {
@@ -127,7 +123,7 @@ public class SuggestedParcelsFragment extends Fragment {
         } else
             for (Parcel p : parcels)
                 if (p.getWarehouseUserLocation().airDistanceInMeters_to(myLocation) < maxDistFromLocation &&
-                        p.getRecipientUserLocation().airDistanceInMeters_to(destinatinLocation) < maxDistFromDestination)
+                        p.getRecipientUserLocation().airDistanceInMeters_to(destinationLocation) < maxDistFromDestination)
                     filteredList.add(p);
         return filteredList;
     }

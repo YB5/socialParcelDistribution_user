@@ -3,7 +3,6 @@ package com.example.socialparceldistribution_user.ui.suggested_parcels;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +20,7 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
     private List<Parcel> parcels;
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
-    public MessengerRecyclerViewAdapter(List<Parcel> parcels) {
+    MessengerRecyclerViewAdapter(List<Parcel> parcels) {
         this.parcels = parcels;
     }
 

@@ -22,11 +22,9 @@ public class UserParcelsViewModel extends AndroidViewModel {
         database=ParcelRepository.getInstance(application);
     }
 
-
-
-
     LiveData<List<Parcel>> getParcels() {
-        return database.getParcels();
+        parcels= database.getParcels();
+        return parcels;
     }
 
 }

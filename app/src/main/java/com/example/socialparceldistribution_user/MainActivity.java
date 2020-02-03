@@ -2,41 +2,24 @@ package com.example.socialparceldistribution_user;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import android.view.MenuItem;
 import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
-import android.widget.HeaderViewListAdapter;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    final String parcelsListTag= "userParcelListFragment";
-    final String suggestedParcelsTag= "suggestedParcelsFragment";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         TextView username = nav_header.findViewById(R.id.sign_in_as_tv);
         Bundle extras = getIntent().getExtras();
         if (extras != null)
-            username.setText("connected as: " + extras.getString("username"));
+            username.setText(getResources().getString(R.string.connected_as)+" "+ extras.getString("username"));
 
         MenuItem signOutMenuItem=  navigationView.getMenu().getItem(2).getSubMenu().getItem(0);
         signOutMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

@@ -15,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParcelDataSource {
+public class ParcelDataSource implements IParcelDataSource {
 
 
     private MutableLiveData<Boolean> isSuccess= new MutableLiveData<>();

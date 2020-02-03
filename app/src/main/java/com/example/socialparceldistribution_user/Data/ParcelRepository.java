@@ -10,7 +10,7 @@ import com.example.socialparceldistribution_user.Entities.Parcel;
 
 import java.util.List;
 
-public class ParcelRepository {
+public class ParcelRepository implements IParcelRepository {
 
     MutableLiveData<List<Parcel>> mutableLiveData= new MutableLiveData<>();
     ParcelDataSource parcelDataSource;

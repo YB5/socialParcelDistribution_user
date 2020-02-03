@@ -62,6 +62,10 @@ public class SuggestedParcelsFragment extends Fragment {
         findRelevant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (destinationEt.getText().toString().isEmpty())
+                {
+                    Toast.makeText(getContext(),"please enter destination name",Toast.LENGTH_LONG).show();
+                    return;}
                 try {
                     List<Address> list = geocoder.getFromLocationName(destinationEt.getText().toString(), 1);
                     destinatinLocation = new UserLocation(list.get(0).getLatitude(), list.get(0).getLongitude());

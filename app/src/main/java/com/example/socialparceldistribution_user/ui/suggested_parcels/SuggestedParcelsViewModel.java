@@ -1,19 +1,32 @@
 package com.example.socialparceldistribution_user.ui.suggested_parcels;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SuggestedParcelsViewModel extends ViewModel {
+import com.example.socialparceldistribution_user.Data.ParcelRepository;
+import com.example.socialparceldistribution_user.Entities.Parcel;
 
-    private MutableLiveData<String> mText;
+import java.util.List;
 
-    public SuggestedParcelsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is suggested parcels fragment");
+public class SuggestedParcelsViewModel extends AndroidViewModel {
+
+    private LiveData<List<Parcel>> parcels;
+    private ParcelRepository parcelRepository;
+
+
+    public SuggestedParcelsViewModel(@NonNull Application application) {
+        super(application);
+        parcelRepository= ParcelRepository.getInstance(application);
+
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<Parcel>> getParcels() {
+        parcels= parcelRepository.getParcels();
+        return parcels;
     }
 }

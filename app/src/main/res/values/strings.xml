@@ -24,6 +24,12 @@
     <string name="sign_out">sign out</string>
     <string name="menu_suggested_parcels">suggested parcels</string>
     <string name="menu_user_parcels">user parcels</string>
+    <string name="suggestOption">Volunteer to deliver the parcel</string>
+    <string name="whereIWillGo">Where I will go?</string>
+    <string name="enterDestinationAddress">enter destination address</string>
+    <string name="maxDistFromCurrentLocation">max distance (in meters) from my location</string>
+    <string name="maxDistFromDestination">max distance (in meters) from destination above</string>
+    <string name="findReleventParcels">find relevant parcels</string>
 </resources>
 
 

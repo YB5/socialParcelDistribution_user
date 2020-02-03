@@ -8,6 +8,12 @@
     app:cardElevation="10dp"
     app:cardUseCompatPadding="true"
     app:contentPadding="10dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -42,6 +48,15 @@
         android:layout_margin="10dp"
         android:text="status"
         android:textSize="20sp" />
+    <TextView
+        android:id="@+id/warehouseAddressTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="warehouse address"
+        android:textSize="20sp" />
+
+
 </LinearLayout>
 
     <LinearLayout
@@ -49,11 +64,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/rec_address_tv"
+            android:id="@+id/recipientAddressTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="address"
+            android:text="recipient address"
             android:textSize="20sp" />
 
         <TextView
@@ -73,7 +88,21 @@
             android:textSize="20sp" />
 
     </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/suggestOption"/>
+
 
     </LinearLayout>
 
+
+</LinearLayout>
 </androidx.cardview.widget.CardView>

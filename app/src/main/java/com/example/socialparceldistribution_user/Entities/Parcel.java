@@ -2,7 +2,6 @@ package com.example.socialparceldistribution_user.Entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
@@ -147,6 +146,13 @@ public class Parcel {
             }
             return null;
         }
+
+        @TypeConverter
+        public static Integer getTypeInt(ParcelStatus parcelStatus) {
+            if (parcelStatus != null)
+                return parcelStatus.code;
+            return null;
+        }
     }
 
 
@@ -165,8 +171,7 @@ public class Parcel {
     @TypeConverters(ParcelType.class)
     private ParcelType parcelType;
     @TypeConverters(ParcelStatus.class)
-    //TODO להסיר את הignore
-    @Ignore
+
     private ParcelStatus parcelStatus;
     private Boolean isFragile;
 

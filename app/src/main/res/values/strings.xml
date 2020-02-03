@@ -31,6 +31,7 @@
     <string name="maxDistFromDestination">max distance (in meters) from destination above</string>
     <string name="findReleventParcels">find relevant parcels</string>
     <string name="connected_as">connected as:</string>
+    <string name="cancellation">Cancellation of Volunteering</string>
 </resources>
 
 

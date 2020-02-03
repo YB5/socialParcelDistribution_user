@@ -13,14 +13,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ParcelDataSource implements IParcelDataSource {
-
 
     private MutableLiveData<Boolean> isSuccess= new MutableLiveData<>();
     public MutableLiveData<Boolean> getIsSuccess() {
         return isSuccess;
+    }
+    List<Parcel> parcelsList;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference parcels = firebaseDatabase.getReference("parcels");
+
+    public void updateParcel(Parcel parcel) {
+        String id= parcel.getParcelId();
+        HashMap map= new HashMap();
+        map.put(id,parcel);
+        parcels.updateChildren(map);
     }
 
 
@@ -38,10 +49,6 @@ public class ParcelDataSource implements IParcelDataSource {
     public List<Parcel> getParcelsList() {
         return parcelsList;
     }
-
-    List<Parcel> parcelsList;
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference parcels = firebaseDatabase.getReference("parcels");
 
     private ParcelDataSource() {
         parcelsList = new ArrayList<>();

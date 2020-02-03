@@ -25,4 +25,8 @@ public class SuggestedParcelsViewModel extends AndroidViewModel {
         parcels= parcelRepository.getParcels();
         return parcels;
     }
+
+    public void updateParcels(Parcel parcel) {
+        parcelRepository.updateParcel(parcel);
+    }
 }

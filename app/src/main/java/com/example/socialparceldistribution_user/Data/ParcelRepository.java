@@ -56,4 +56,8 @@ public class ParcelRepository implements IParcelRepository {
     public LiveData<Boolean> getIsSuccess(){
         return parcelDataSource.getIsSuccess();
     }
+
+    public void updateParcel(Parcel parcel) {
+        parcelDataSource.updateParcel(parcel);
+    }
 }

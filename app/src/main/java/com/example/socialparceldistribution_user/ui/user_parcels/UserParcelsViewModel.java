@@ -14,17 +14,24 @@ import java.util.List;
 public class UserParcelsViewModel extends AndroidViewModel {
 
 
-    private LiveData<List<Parcel>> parcels;
-    private ParcelRepository database;
+    private List<Parcel> myParcels;
+    private ParcelRepository parcelRepository;
 
     public UserParcelsViewModel(@NonNull Application application) {
         super(application);
-        database=ParcelRepository.getInstance(application);
+        parcelRepository =ParcelRepository.getInstance(application);
+
+
     }
 
     LiveData<List<Parcel>> getParcels() {
-        parcels= database.getParcels();
-        return parcels;
+        myParcels= parcelRepository.getParcels();
+        return myParcels;
     }
 
+    public LiveData<List<Parcel>> getMyParcels() {
+        LiveData<List<Parcel>> listLiveData=  parcelRepository.getMyParcels();
+        myParcels = listLiveData.getValue();
+        return listLiveData;
+    }
 }

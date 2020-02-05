@@ -8,10 +8,6 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.socialparceldistribution_user.Data.ParcelDataSource;
-import com.example.socialparceldistribution_user.Data.RoomDatabaseHelper;
-import com.example.socialparceldistribution_user.Entities.Parcel;
-
-import java.util.List;
 
 public class ParcelService extends Service {
     ParcelDataSource parcelDataSource;
@@ -28,9 +24,9 @@ public class ParcelService extends Service {
         Log.d(TAG,"onCreate");
         parcelDataSource = ParcelDataSource.getInstance();
         //databaseHelper= new RoomDatabaseHelper(application.getApplicationContext());
-        ParcelDataSource.changedListener changedListener= new ParcelDataSource.changedListener() {
+        ParcelDataSource.parcelsChangedListener parcelsChangedListener = new ParcelDataSource.parcelsChangedListener() {
             @Override
-            public void change() {
+            public void onParcelsChanged() {
                 //todo : Identify the parcel owner
                 if(true/*the parcel owner*/) {
                     Intent intent = new Intent("YBandSHU.A_CUSTOM_INTENT");
@@ -39,7 +35,7 @@ public class ParcelService extends Service {
                 }
             }
         };
-        parcelDataSource.setChangedListener(changedListener);
+        parcelDataSource.setParcelsChangedListener(parcelsChangedListener);
 
 
 

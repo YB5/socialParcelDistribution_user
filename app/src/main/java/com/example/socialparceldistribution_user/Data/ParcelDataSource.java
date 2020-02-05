@@ -1,11 +1,13 @@
 package com.example.socialparceldistribution_user.Data;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.socialparceldistribution_user.Entities.Parcel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,7 +17,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ParcelDataSource implements IParcelDataSource {
 
@@ -23,47 +24,55 @@ public class ParcelDataSource implements IParcelDataSource {
     public MutableLiveData<Boolean> getIsSuccess() {
         return isSuccess;
     }
-    List<Parcel> parcelsList;
+    List<Parcel> allParcelsList;
+    MutableLiveData<List<Parcel>> myParcels;
+
+    public MutableLiveData<List<Parcel>> getMyParcels() {
+        return myParcels;
+    }
+
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference parcels = firebaseDatabase.getReference("parcels");
+    DatabaseReference parcels = firebaseDatabase.getReference("ExistingParcels");
 
-    public void updateParcel(Parcel parcel) {
-        String id= parcel.getParcelId();
-        HashMap map= new HashMap();
-        map.put(id,parcel);
-        parcels.updateChildren(map);
-    }
-
-
-    public interface changedListener {
-        void change();
-    }
-
-    private changedListener listener;
-
-    public void setChangedListener(changedListener l) {
-        listener = l;
-    }
-
-
-    public List<Parcel> getParcelsList() {
-        return parcelsList;
-    }
 
     private ParcelDataSource() {
-        parcelsList = new ArrayList<>();
+        allParcelsList = new ArrayList<>();
+        myParcels.setValue(new ArrayList<Parcel>());
+
         parcels.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                parcelsList.clear();
+                allParcelsList.clear();
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Parcel parcel = snapshot.getValue(Parcel.class);
-                        parcelsList.add(parcel);
-                    }
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                            Parcel parcel = snapshot1.getValue(Parcel.class);
+                            allParcelsList.add(parcel);
+                        }
                 }
-                if (listener != null)
-                    listener.change();
+                if (parcelsChangedListener != null)
+                    parcelsChangedListener.onParcelsChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        String userPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+        parcels.child(userPhone).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               List<Parcel> temp= new ArrayList<>();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                            Parcel parcel = snapshot1.getValue(Parcel.class);
+                            temp.add(parcel);
+                        }
+                    myParcels.setValue(temp);
+                }
+
             }
 
             @Override
@@ -72,6 +81,37 @@ public class ParcelDataSource implements IParcelDataSource {
             }
         });
     }
+    public void updateParcel(Parcel parcel) {
+        String phone= parcel.getRecipientPhone();
+        String id= parcel.getParcelId();
+        HashMap map= new HashMap();
+        map.put(id,parcel);
+        parcels.child(phone).updateChildren(map);
+    }
+
+
+    public interface parcelsChangedListener {
+        void onParcelsChanged();
+    }
+    private parcelsChangedListener parcelsChangedListener;
+    public void setParcelsChangedListener(parcelsChangedListener l) {
+        parcelsChangedListener = l;
+    }
+
+    public interface myParcelsChangedListener {
+        void onMyParcelsChanged();
+    }
+    private myParcelsChangedListener myParcelsChangedListener;
+    public void setMyParcelsChangedListener(myParcelsChangedListener l) {
+        myParcelsChangedListener = l;
+    }
+
+
+    public List<Parcel> getAllParcelsList() {
+        return allParcelsList;
+    }
+
+
 
     private static ParcelDataSource instance;
 

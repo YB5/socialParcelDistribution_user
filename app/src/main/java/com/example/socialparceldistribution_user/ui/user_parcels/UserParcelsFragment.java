@@ -25,8 +25,10 @@ public class UserParcelsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        viewModel =
-                ViewModelProviders.of(this).get(UserParcelsViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(UserParcelsViewModel.class);
+
+        viewModel.getMyParcels()
+
         View root = inflater.inflate(R.layout.history_parcels, container, false);
 
         final RecyclerView recyclerView = root.findViewById(R.id.recycler_view);

@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -17,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         emailEt = findViewById(R.id.et_email);
         Button signIn_bt = findViewById(R.id.bt_sign_in);
         Button signUp_bt = findViewById(R.id.bt_sign_up);
-        final ConstraintLayout constraintLayout = findViewById(R.id.container);
+        final LinearLayout linearLayout = findViewById(R.id.container);
 
 
         signUp_bt.setOnClickListener(new View.OnClickListener() {
@@ -58,12 +62,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Toast.makeText(LoginActivity.this,"successful, welcome!!!",Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("username", fullName);
                             startActivity(intent);
                         } else {
-                            Snackbar.make(constraintLayout, "unsuccess to sign-up", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(linearLayout, "unsuccess to sign-up", Snackbar.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -86,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                             intent.putExtra("username", firebaseAuth.getCurrentUser().getDisplayName());
                             startActivity(intent);
                         } else {
-                            Snackbar.make(constraintLayout, "unsuccess to sign-in", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(linearLayout, "unsuccess to sign-in", Snackbar.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -106,11 +109,11 @@ public class LoginActivity extends AppCompatActivity {
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                // TextView userTv = findViewById(R.id.user_tv);
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {//sign up or sign in
-                    userName = user.getDisplayName();
-                    if (fullName != null && !fullName.isEmpty()) { //sign up - update profile with full name
+                //sign up or sign in
+                if (user != null) {
+                    //if sign up - update profile with full name
+                    if (fullName != null && !fullName.isEmpty()) {
 
                         user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(fullName).build()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -118,16 +121,10 @@ public class LoginActivity extends AppCompatActivity {
                                 fullName = null;
                                 if (task.isSuccessful())
                                     Toast.makeText(LoginActivity.this, user.getDisplayName() + " logged in. Welcome!!", Toast.LENGTH_LONG).show();
-                                //Snackbar.make(linearLayout, user.getDisplayName() + " Welcome!!!", Snackbar.LENGTH_SHORT).show();
                             }
                         });
                     }
-
-                    //userTv.setText(user.getDisplayName() + " logged in");
-                } //else {
-                //userTv.setText("please log in");
-
-                //}
+                }
             }
         };
     }

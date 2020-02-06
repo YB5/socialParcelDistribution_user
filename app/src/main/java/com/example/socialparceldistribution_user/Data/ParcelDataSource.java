@@ -1,9 +1,7 @@
 package com.example.socialparceldistribution_user.Data;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.socialparceldistribution_user.Entities.Parcel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -13,7 +11,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +22,7 @@ public class ParcelDataSource implements IParcelDataSource {
         return isSuccess;
     }
     List<Parcel> allParcelsList;
-    MutableLiveData<List<Parcel>> myParcels;
+    MutableLiveData<List<Parcel>> myParcels= new MutableLiveData<>();
 
     public MutableLiveData<List<Parcel>> getMyParcels() {
         return myParcels;
@@ -59,20 +56,20 @@ public class ParcelDataSource implements IParcelDataSource {
 
             }
         });
-        String userPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
-        parcels.child(userPhone).addValueEventListener(new ValueEventListener() {
+
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        parcels.child(email.replace(".",",")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               List<Parcel> temp= new ArrayList<>();
+                List<Parcel> temp= new ArrayList<>();
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                            Parcel parcel = snapshot1.getValue(Parcel.class);
-                            temp.add(parcel);
-                        }
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Parcel parcel = snapshot.getValue(Parcel.class);
+                        temp.add(parcel);
+                    }
                     myParcels.setValue(temp);
                 }
-
             }
 
             @Override
@@ -82,13 +79,12 @@ public class ParcelDataSource implements IParcelDataSource {
         });
     }
     public void updateParcel(Parcel parcel) {
-        String phone= parcel.getRecipientPhone();
+        String email= parcel.getRecipientEmail();
         String id= parcel.getParcelId();
         HashMap map= new HashMap();
         map.put(id,parcel);
-        parcels.child(phone).updateChildren(map);
+        parcels.child(email.replace(".",",")).updateChildren(map);
     }
-
 
     public interface parcelsChangedListener {
         void onParcelsChanged();
@@ -106,12 +102,9 @@ public class ParcelDataSource implements IParcelDataSource {
         myParcelsChangedListener = l;
     }
 
-
     public List<Parcel> getAllParcelsList() {
         return allParcelsList;
     }
-
-
 
     private static ParcelDataSource instance;
 
@@ -122,25 +115,6 @@ public class ParcelDataSource implements IParcelDataSource {
     }
 
 
-    public void addParcel(Parcel p) {
-        String id = parcels.push().getKey();
-        p.setParcelId(id);
-        parcels.child(id).setValue(p).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                isSuccess.setValue(true);
-                isSuccess.setValue(null);
-            }
-
-
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                isSuccess.setValue(false);
-                isSuccess.setValue(null);
-            }
-        });
-    }
 }
 
 

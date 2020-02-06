@@ -20,34 +20,28 @@ import java.util.List;
 
 public class UserParcelsFragment extends Fragment {
 
-    private List<Parcel> parcelList = new ArrayList<>();
-    private UserParcelsViewModel viewModel;
+    private List<Parcel> myParcelsList = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        viewModel = ViewModelProviders.of(this).get(UserParcelsViewModel.class);
-
-        viewModel.getMyParcels()
-
+        UserParcelsViewModel viewModel = ViewModelProviders.of(this).get(UserParcelsViewModel.class);
         View root = inflater.inflate(R.layout.history_parcels, container, false);
 
         final RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        UserRecyclerViewAdapter historyParcelsAdapter = new UserRecyclerViewAdapter(parcelList);
+        UserRecyclerViewAdapter historyParcelsAdapter = new UserRecyclerViewAdapter(myParcelsList);
         recyclerView.setAdapter(historyParcelsAdapter);
 
-        UserParcelsViewModel viewModel = ViewModelProviders.of(this).get(UserParcelsViewModel.class);
-        viewModel.getParcels().observe(getViewLifecycleOwner(), new Observer<List<Parcel>>() {
+        viewModel.getMyParcels().observe(getViewLifecycleOwner(), new Observer<List<Parcel>>() {
             @Override
             public void onChanged(List<Parcel> parcels) {
-                parcelList = parcels;
+                myParcelsList = parcels;
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                UserRecyclerViewAdapter historyParcelsAdapter = new UserRecyclerViewAdapter(parcelList);
-                recyclerView.setAdapter(historyParcelsAdapter);
+                UserRecyclerViewAdapter myParcelsAdapter = new UserRecyclerViewAdapter(myParcelsList);
+                recyclerView.setAdapter(myParcelsAdapter);
             }
         });
-
         return root;
     }
 }

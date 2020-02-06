@@ -47,10 +47,8 @@ public class SuggestedParcelsFragment extends Fragment {
     private LocationManager locationManager;
     private String userName;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        final SuggestedParcelsViewModel viewModel =
-                ViewModelProviders.of(this).get(SuggestedParcelsViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final SuggestedParcelsViewModel viewModel = ViewModelProviders.of(this).get(SuggestedParcelsViewModel.class);
 
         View root = inflater.inflate(R.layout.parcels_to_deliver, container, false);
         geocoder = new Geocoder(getContext());

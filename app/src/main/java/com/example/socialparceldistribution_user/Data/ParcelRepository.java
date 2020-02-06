@@ -1,4 +1,5 @@
 package com.example.socialparceldistribution_user.Data;
+
 import android.app.Application;
 
 
@@ -13,18 +14,18 @@ import java.util.List;
 
 public class ParcelRepository implements IParcelRepository {
 
-    MutableLiveData<List<Parcel>> mutableLiveData= new MutableLiveData<>();
+    MutableLiveData<List<Parcel>> mutableLiveData = new MutableLiveData<>();
     ParcelDataSource parcelDataSource;
     RoomDatabaseHelper databaseHelper;
 
-    private ParcelRepository(Application application){
+    private ParcelRepository(Application application) {
         parcelDataSource = ParcelDataSource.getInstance();
-        databaseHelper= new RoomDatabaseHelper(application.getApplicationContext());
+        databaseHelper = new RoomDatabaseHelper(application.getApplicationContext());
 
         ParcelDataSource.parcelsChangedListener parcelsChangedListener = new ParcelDataSource.parcelsChangedListener() {
             @Override
             public void onParcelsChanged() {
-                List<Parcel> parcelList=parcelDataSource.getAllParcelsList();
+                List<Parcel> parcelList = parcelDataSource.getAllParcelsList();
                 mutableLiveData.setValue(parcelDataSource.getAllParcelsList());
                 databaseHelper.clearTable();
                 databaseHelper.addParcels(parcelList);
@@ -35,6 +36,7 @@ public class ParcelRepository implements IParcelRepository {
     }
 
     private static ParcelRepository instance;
+
     public static ParcelRepository getInstance(Application application) {
         if (instance == null)
             instance = new ParcelRepository(application);
@@ -47,15 +49,11 @@ public class ParcelRepository implements IParcelRepository {
 //    }
 
 
-    public void addParcel(Parcel parcel) {
-        parcelDataSource.addParcel(parcel);
-    }
-
     public LiveData<List<Parcel>> getParcels() {
         return databaseHelper.getParcels();
     }
 
-    public LiveData<Boolean> getIsSuccess(){
+    public LiveData<Boolean> getIsSuccess() {
         return parcelDataSource.getIsSuccess();
     }
 
@@ -63,6 +61,7 @@ public class ParcelRepository implements IParcelRepository {
         parcelDataSource.updateParcel(parcel);
     }
 
-    public LiveData<List<Parcel>> getMyParcels() {da
+    public LiveData<List<Parcel>> getMyParcels() {
+        return parcelDataSource.getMyParcels();
     }
 }

@@ -55,6 +55,11 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "input is not valid, try again", Toast.LENGTH_LONG).show();
                     return;
                 }
+                if (fullNameEt.getText().toString().isEmpty())
+                {
+                    Toast.makeText(LoginActivity.this, "please enter full name", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 fullName = fullNameEt.getText().toString();
                 String password = passwordEt.getText().toString();
                 String email = emailEt.getText().toString();
@@ -100,9 +105,8 @@ public class LoginActivity extends AppCompatActivity {
         quickEntering.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fullNameEt.setText("iii");
                 passwordEt.setText("123456");
-                emailEt.setText("u@u.com");
+                emailEt.setText("uriya@gmail.com");
             }
         });
 
@@ -130,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean check_validate() {
-        if (fullNameEt.getText().toString().isEmpty() || emailEt.getText().toString().isEmpty() || passwordEt.getText().toString().isEmpty()) {
+        if (emailEt.getText().toString().isEmpty() || passwordEt.getText().toString().isEmpty()) {
             Toast.makeText(LoginActivity.this, "input is not valid, try again", Toast.LENGTH_LONG).show();
             return false;
         }

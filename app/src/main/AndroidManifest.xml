@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".ui.user_parcels.ParcelService"/>
+        <service android:name=".ui.user_parcels.ParcelService" android:exported="true"/>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package com.example.socialparceldistribution_user.ui.user_parcels;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,17 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     public UserRecyclerViewAdapter(List<Parcel> parcels) {
         this.parcels = parcels;
     }
+
+    private MyParcelsListener listener;
+
+    interface MyParcelsListener {
+        void onVolunteerButtonClicked(int position, View view);
+    }
+
+    void setListener(MyParcelsListener listener){
+        this.listener=listener;
+    }
+
     class HistoryParcelViewHolder extends RecyclerView.ViewHolder{
 
         TextView status;
@@ -31,6 +43,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         TextView warehouseAddress;
         TextView date;
         TextView messengerName;
+        Button seeSuggestions;
 
         private HistoryParcelViewHolder(View itemView) {
             super(itemView);
@@ -38,10 +51,18 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             status=itemView.findViewById(R.id.status_tv);
             recipientName=itemView.findViewById(R.id.recipient_name_tv);
             parcelType=itemView.findViewById(R.id.type_tv);
-            recipientAddress=itemView.findViewById(R.id.rec_address_tv);
+            recipientAddress=itemView.findViewById(R.id.recipientAddressTv);
             warehouseAddress =itemView.findViewById(R.id.warehouseAddressTv);
             date=itemView.findViewById(R.id.date_tv);
             messengerName=itemView.findViewById(R.id.messenger_name_tv);
+            seeSuggestions=itemView.findViewById(R.id.bt_see_suggestions);
+            seeSuggestions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener!=null)
+                        listener.onVolunteerButtonClicked(getAdapterPosition(),view);
+                }
+            });
         }
     }
     @NonNull
@@ -60,6 +81,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         holder.recipientName.setText(parcel.getRecipientName().isEmpty()?"no recipient name":parcel.getRecipientName());
         holder.parcelType.setText(parcel.getParcelType()==null?"no type":parcel.getParcelType().toString());
         holder.status.setText(parcel.getParcelStatus()==null?"no status":parcel.getParcelStatus().toString());
+        holder.seeSuggestions.setText(parcel.getMessengers()!=null?"see your "+parcel.getMessengers().size()+" suggestions":"no suggestions");
     }
 
     @Override

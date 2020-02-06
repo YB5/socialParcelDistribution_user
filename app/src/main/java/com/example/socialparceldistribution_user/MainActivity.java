@@ -2,6 +2,8 @@ package com.example.socialparceldistribution_user;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.socialparceldistribution_user.ui.user_parcels.ParcelService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        final Intent intent = new Intent(this, ParcelService.class);
+        startService(intent);
     }
 
     @Override

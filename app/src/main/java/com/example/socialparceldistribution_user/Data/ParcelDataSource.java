@@ -6,6 +6,7 @@ import com.example.socialparceldistribution_user.Entities.Parcel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,26 +58,35 @@ public class ParcelDataSource implements IParcelDataSource {
             }
         });
 
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
 
-        parcels.child(email.replace(".",",")).addValueEventListener(new ValueEventListener() {
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Parcel> temp= new ArrayList<>();
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Parcel parcel = snapshot.getValue(Parcel.class);
-                        temp.add(parcel);
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser()!=null){
+                String email = firebaseAuth.getCurrentUser().getEmail();
+                parcels.child(email.replace(".",",")).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Parcel> temp= new ArrayList<>();
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Parcel parcel = snapshot.getValue(Parcel.class);
+                                temp.add(parcel);
+                            }
+                            myParcels.setValue(temp);
+                        }
                     }
-                    myParcels.setValue(temp);
-                }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
+
     }
     public void updateParcel(Parcel parcel) {
         String email= parcel.getRecipientEmail();
@@ -113,6 +123,7 @@ public class ParcelDataSource implements IParcelDataSource {
             instance = new ParcelDataSource();
         return instance;
     }
+
 
 
 }

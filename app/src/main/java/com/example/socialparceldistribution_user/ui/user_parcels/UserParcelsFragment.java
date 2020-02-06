@@ -36,7 +36,7 @@ public class UserParcelsFragment extends Fragment {
         final RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        UserRecyclerViewAdapter myParcelsAdapter = new UserRecyclerViewAdapter(myParcelsList);
+        final UserRecyclerViewAdapter myParcelsAdapter = new UserRecyclerViewAdapter(myParcelsList);
         myParcelsAdapter.setListener(new UserRecyclerViewAdapter.MyParcelsListener() {
             @Override
             public void onVolunteerButtonClicked(final int position, View view) {
@@ -45,12 +45,12 @@ public class UserParcelsFragment extends Fragment {
                 final String[] keys = Arrays.copyOf(keysAsObjectArray,keysAsObjectArray.length,String[].class);
                 boolean[] approvalKeys = new boolean[keys.length];
                 for (int i = 0; i < map.size(); i++) {
-                    if (keys[i] == "true")
+                    if (map.get(keys[i]) == true)
                         approvalKeys[i] = true;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("choose which messenger to approve").setMultiChoiceItems(keys, approvalKeys, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
+                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         Parcel parcel = myParcelsList.get(position);
                         parcel.getMessengers().put(keys[which], isChecked);
@@ -59,7 +59,6 @@ public class UserParcelsFragment extends Fragment {
                 }).setPositiveButton("finish", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 }).show();
             }
@@ -73,7 +72,7 @@ public class UserParcelsFragment extends Fragment {
             public void onChanged(List<Parcel> parcels) {
                 myParcelsList = parcels;
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                UserRecyclerViewAdapter myParcelsAdapter = new UserRecyclerViewAdapter(myParcelsList);
+                final UserRecyclerViewAdapter myParcelsAdapter = new UserRecyclerViewAdapter(myParcelsList);
                 myParcelsAdapter.setListener(new UserRecyclerViewAdapter.MyParcelsListener() {
                     @Override
                     public void onVolunteerButtonClicked(final int position, View view) {
@@ -82,7 +81,7 @@ public class UserParcelsFragment extends Fragment {
                         final String[] keys = Arrays.copyOf(keysAsObjectArray,keysAsObjectArray.length,String[].class);
                         boolean[] approvalKeys = new boolean[keys.length];
                         for (int i = 0; i < map.size(); i++) {
-                            if (keys[i] == "true")
+                            if (map.get(keys[i]) == true)
                                 approvalKeys[i] = true;
                         }
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -96,7 +95,6 @@ public class UserParcelsFragment extends Fragment {
                         }).setPositiveButton("finish", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                             }
                         }).show();
                     }

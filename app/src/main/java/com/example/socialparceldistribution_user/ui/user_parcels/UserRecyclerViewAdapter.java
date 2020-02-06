@@ -1,5 +1,7 @@
 package com.example.socialparceldistribution_user.ui.user_parcels;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +61,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             seeSuggestions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     if (listener!=null)
                         listener.onVolunteerButtonClicked(getAdapterPosition(),view);
                 }
@@ -81,6 +84,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         holder.recipientName.setText(parcel.getRecipientName().isEmpty()?"no recipient name":parcel.getRecipientName());
         holder.parcelType.setText(parcel.getParcelType()==null?"no type":parcel.getParcelType().toString());
         holder.status.setText(parcel.getParcelStatus()==null?"no status":parcel.getParcelStatus().toString());
+        holder.seeSuggestions.setEnabled(parcel.getMessengers()!=null?true:false);
         holder.seeSuggestions.setText(parcel.getMessengers()!=null?"see your "+parcel.getMessengers().size()+" suggestions":"no suggestions");
     }
 

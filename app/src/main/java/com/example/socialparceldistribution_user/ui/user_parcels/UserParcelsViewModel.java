@@ -27,4 +27,8 @@ public class UserParcelsViewModel extends AndroidViewModel {
         myParcels = listLiveData.getValue();
         return listLiveData;
     }
+
+    public void updateParcels(Parcel parcel) {
+        parcelRepository.updateParcel(parcel);
+    }
 }

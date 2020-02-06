@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +41,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        final SharedPreferences sharedPreferences =getPreferences(MODE_PRIVATE);
+        final SharedPreferences.Editor editor= sharedPreferences.edit();
+
         firebaseAuth = FirebaseAuth.getInstance();
         fullNameEt = findViewById(R.id.et_full_name);
         passwordEt = findViewById(R.id.et_password);
@@ -46,6 +51,13 @@ public class LoginActivity extends AppCompatActivity {
         Button signIn_bt = findViewById(R.id.bt_sign_in);
         Button signUp_bt = findViewById(R.id.bt_sign_up);
         final LinearLayout linearLayout = findViewById(R.id.container);
+
+
+        emailEt.setText(sharedPreferences.getString("email",""));
+        passwordEt.setText(sharedPreferences.getString("password",""));
+
+
+
 
 
         signUp_bt.setOnClickListener(new View.OnClickListener() {
@@ -61,12 +73,14 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 fullName = fullNameEt.getText().toString();
-                String password = passwordEt.getText().toString();
-                String email = emailEt.getText().toString();
+                final String password = passwordEt.getText().toString();
+                final String email = emailEt.getText().toString();
+
                 firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            editor.putString("email",email).putString("password",password).commit();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("username", fullName);
                             startActivity(intent);
@@ -84,12 +98,13 @@ public class LoginActivity extends AppCompatActivity {
                 if (!check_validate()) {
                     return;
                 }
-                String password = passwordEt.getText().toString();
-                String email = emailEt.getText().toString();
+                final String password = passwordEt.getText().toString();
+                final String email = emailEt.getText().toString();
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            editor.putString("email",email).putString("password",password).commit();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("username", firebaseAuth.getCurrentUser().getDisplayName());
                             startActivity(intent);

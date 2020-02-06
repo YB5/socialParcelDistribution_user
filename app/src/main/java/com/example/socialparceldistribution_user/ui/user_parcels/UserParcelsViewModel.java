@@ -22,11 +22,6 @@ public class UserParcelsViewModel extends AndroidViewModel {
        parcelRepository= ParcelRepository.getInstance(application);
     }
 
-    /*public UserParcelsViewModel(@NonNull Application application) {
-        super(application);
-        parcelRepository =ParcelRepository.getInstance(application);
-    }*/
-
     public LiveData<List<Parcel>> getMyParcels() {
         LiveData<List<Parcel>> listLiveData=  parcelRepository.getMyParcels();
         myParcels = listLiveData.getValue();

@@ -10,5 +10,16 @@ public interface IParcelDataSource {
     MutableLiveData<List<Parcel>> getMyParcels();
     void updateParcel(Parcel parcel);
     void arrivedParcel(Parcel parcel);
+    MutableLiveData<Boolean> getIsSuccess();
+    List<Parcel> getAllParcelsList();
 
+    interface ParcelsChangedListener {
+        void onParcelsChanged();
+    }
+    void setParcelsChangedListener(ParcelsChangedListener l);
+
+    interface MyParcelsChangedListener {
+        void onMyParcelsChanged();
+    }
+    void setMyParcelsChangedListener(MyParcelsChangedListener l);
 }

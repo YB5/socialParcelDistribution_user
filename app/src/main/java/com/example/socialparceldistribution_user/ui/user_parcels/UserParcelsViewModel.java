@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.socialparceldistribution_user.Data.IParcelRepository;
 import com.example.socialparceldistribution_user.Data.ParcelRepository;
 import com.example.socialparceldistribution_user.Entities.Parcel;
 
@@ -15,7 +16,7 @@ public class UserParcelsViewModel extends AndroidViewModel {
 
 
     private List<Parcel> myParcels;
-    private ParcelRepository parcelRepository;
+    private IParcelRepository parcelRepository;
 
     public UserParcelsViewModel(@NonNull Application application) {
         super(application);

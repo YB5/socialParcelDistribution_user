@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.socialparceldistribution_user.Data.IParcelRepository;
 import com.example.socialparceldistribution_user.Data.ParcelRepository;
 import com.example.socialparceldistribution_user.Entities.Parcel;
 import com.example.socialparceldistribution_user.Entities.UserLocation;
@@ -23,7 +24,7 @@ import java.util.List;
 public class SuggestedParcelsViewModel extends AndroidViewModel {
 
     private LiveData<List<Parcel>> parcels;
-    private ParcelRepository parcelRepository;
+    private IParcelRepository parcelRepository;
     private Geocoder geocoder;
 
     public SuggestedParcelsViewModel(@NonNull Application application) {

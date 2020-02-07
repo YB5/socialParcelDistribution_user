@@ -15,14 +15,14 @@ import java.util.List;
 public class ParcelRepository implements IParcelRepository {
 
     MutableLiveData<List<Parcel>> mutableLiveData = new MutableLiveData<>();
-    ParcelDataSource parcelDataSource;
+    IParcelDataSource parcelDataSource;
     RoomDatabaseHelper databaseHelper;
 
     private ParcelRepository(Application application) {
         parcelDataSource = ParcelDataSource.getInstance();
         databaseHelper = new RoomDatabaseHelper(application.getApplicationContext());
 
-        ParcelDataSource.parcelsChangedListener parcelsChangedListener = new ParcelDataSource.parcelsChangedListener() {
+        IParcelDataSource.ParcelsChangedListener parcelsChangedListener = new IParcelDataSource.ParcelsChangedListener() {
             @Override
             public void onParcelsChanged() {
                 List<Parcel> parcelList = parcelDataSource.getAllParcelsList();
@@ -43,16 +43,12 @@ public class ParcelRepository implements IParcelRepository {
         return instance;
     }
 
-//    public MutableLiveData<Boolean> getStatus(){
-//        //todo
-//        return new MutableLiveData<Boolean>();
-//    }
-
-
+    @Override
     public LiveData<List<Parcel>> getParcels() {
         return databaseHelper.getParcels();
     }
 
+    @Override
     public LiveData<Boolean> getIsSuccess() {
         return parcelDataSource.getIsSuccess();
     }

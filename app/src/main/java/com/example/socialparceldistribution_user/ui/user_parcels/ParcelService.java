@@ -22,7 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ParcelService extends Service {
-    ParcelDataSource parcelDataSource;
     String TAG = "mySer";
     @Nullable
     @Override

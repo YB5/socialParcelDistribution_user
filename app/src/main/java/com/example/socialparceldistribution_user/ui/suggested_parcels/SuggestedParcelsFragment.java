@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,107 +42,63 @@ public class SuggestedParcelsFragment extends Fragment {
     private EditText maxDistanceFromMyLocation;
     private EditText maxDistanceFromDestination;
     private EditText destinationEt;
-    private Geocoder geocoder;
-    private UserLocation destinationLocation;
-    private UserLocation myLocation;
+    private String destinationAddress;
+    private Location myLocation;
     private LocationManager locationManager;
     private String userName;
+    String maxDistFromLocation;
+    String maxDistFromDestination;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final SuggestedParcelsViewModel viewModel = ViewModelProviders.of(this).get(SuggestedParcelsViewModel.class);
 
         View root = inflater.inflate(R.layout.parcels_to_deliver, container, false);
-        geocoder = new Geocoder(getContext());
         destinationEt = root.findViewById(R.id.dest_address_et);
         maxDistanceFromDestination = root.findViewById(R.id.maxFromDestination);
         maxDistanceFromMyLocation = root.findViewById(R.id.maxFromCurrentLocation);
-        userName=FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         final RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         Button findRelevant = root.findViewById(R.id.findParcels_bt);
+
         findRelevant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (destinationEt.getText().toString().isEmpty()) {
+                destinationAddress = destinationEt.getText().toString();
+                if (destinationAddress.isEmpty()) {
                     Toast.makeText(getContext(), "please enter destination name", Toast.LENGTH_LONG).show();
                     return;
                 }
-                try {
-                    List<Address> list = geocoder.getFromLocationName(destinationEt.getText().toString(), 1);
-                    destinationLocation = new UserLocation(list.get(0).getLatitude(), list.get(0).getLongitude());
-                } catch (IOException e) {
-                    destinationLocation = null;
-                    Toast.makeText(getContext(), "Cannot calculate the destination. Please turn on the gps", Toast.LENGTH_LONG).show();
-                }
-
+                maxDistFromLocation = maxDistanceFromMyLocation.getText().toString();
+                maxDistFromDestination = maxDistanceFromDestination.getText().toString();
                 locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                getLocation();
 
+                parcelList = viewModel.findRelevantParcels(maxDistFromLocation, maxDistFromDestination, myLocation, destinationAddress);
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                MessengerRecyclerViewAdapter suggestedParcelsAdapter = new MessengerRecyclerViewAdapter(myFilter(parcelList),userName);
+                MessengerRecyclerViewAdapter suggestedParcelsAdapter = new MessengerRecyclerViewAdapter(parcelList, userName);
                 suggestedParcelsAdapter.setListener(new MessengerRecyclerViewAdapter.SuggestedParcelsListener() {
                     @Override
                     public void onVolunteerButtonClicked(int position, View view) {
-                        //String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-                        Parcel parcel = parcelList.get(position);
-                        //parcel.getMessengers().put(person.toString(),false);
-                        if (parcel.getMessengers() == null) {
-                            HashMap hashMap = new HashMap();
-                            hashMap.put(userName, false);
-                            parcel.setMessengers(hashMap);
-                        } else {
-                            //if key is already exist, cancel the registration
-                            if (parcel.getMessengers().containsKey(userName))
-                                parcel.getMessengers().remove(userName);
-                            else
-                                parcel.getMessengers().put(userName, false);
-                        }
-                        viewModel.updateParcels(parcel);
+                        viewModel.updateVolunteerState(position, userName);
                     }
                 });
                 recyclerView.setAdapter(suggestedParcelsAdapter);
 
             }
         });
-//
-//        try {
-//            List<Address> list = geocoder.getFromLocationName(destinationEt.getText().toString(), 1);
-//            destinationLocation = new UserLocation(list.get(0).getLatitude(), list.get(0).getLongitude());
-//        } catch (IOException e) {
-//            destinationLocation = null;
-//            Toast.makeText(getContext(), "Cannot calculate the destination. Please turn on the gps", Toast.LENGTH_LONG).show();
-//        }
-//
-//        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-//
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        MessengerRecyclerViewAdapter messengerRecyclerViewAdapter = new MessengerRecyclerViewAdapter(parcelList);
-//        recyclerView.setAdapter(messengerRecyclerViewAdapter);
 
         viewModel.getParcels().observe(getViewLifecycleOwner(), new Observer<List<Parcel>>() {
             @Override
             public void onChanged(List<Parcel> parcels) {
-                parcelList = myFilter(parcels);
+                parcelList = viewModel.findRelevantParcels(maxDistFromLocation, maxDistFromDestination, myLocation, destinationAddress);
+                recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                MessengerRecyclerViewAdapter suggestedParcelsAdapter = new MessengerRecyclerViewAdapter(parcelList,userName);
+                MessengerRecyclerViewAdapter suggestedParcelsAdapter = new MessengerRecyclerViewAdapter(parcelList, userName);
                 suggestedParcelsAdapter.setListener(new MessengerRecyclerViewAdapter.SuggestedParcelsListener() {
                     @Override
                     public void onVolunteerButtonClicked(int position, View view) {
-                        //String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-                        Parcel parcel = parcelList.get(position);
-                        //parcel.getMessengers().put(person.toString(),false);
-                        if (parcel.getMessengers() == null) {
-                            HashMap hashMap = new HashMap();
-                            hashMap.put(userName, false);
-                            parcel.setMessengers(hashMap);
-                        } else {
-                            //if key is already exist, cancel the registration
-                            if (parcel.getMessengers().containsKey(userName))
-                                parcel.getMessengers().remove(userName);
-                            else
-                                parcel.getMessengers().put(userName, false);
-                        }
-                        viewModel.updateParcels(parcel);
+                        viewModel.updateVolunteerState(position, userName);
                     }
                 });
                 recyclerView.setAdapter(suggestedParcelsAdapter);
@@ -149,26 +106,6 @@ public class SuggestedParcelsFragment extends Fragment {
         });
 
         return root;
-    }
-
-    private List<Parcel> myFilter(List<Parcel> parcels) {
-        List<Parcel> filteredList = new ArrayList<>();
-        //if no filter determined:
-        if (maxDistanceFromDestination.getText().toString().isEmpty() || maxDistanceFromDestination.getText() == null)
-            return parcels;
-        double maxDistFromLocation = Double.parseDouble(maxDistanceFromMyLocation.getText().toString());
-        double maxDistFromDestination = Double.parseDouble(maxDistanceFromDestination.getText().toString());
-
-        getLocation();
-        if (myLocation == null) {
-            Toast.makeText(getContext(), "your local location cannot be calculated. please turn on the gps", Toast.LENGTH_SHORT).show();
-            return new ArrayList<>();//empty list
-        } else
-            for (Parcel p : parcels)
-                if (p.getWarehouseUserLocation().airDistanceInMeters_to(myLocation) < maxDistFromLocation &&
-                        p.getRecipientUserLocation().airDistanceInMeters_to(destinationLocation) < maxDistFromDestination)
-                    filteredList.add(p);
-        return filteredList;
     }
 
 
@@ -179,7 +116,7 @@ public class SuggestedParcelsFragment extends Fragment {
                 getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Location_PERMISSION);
         } else
-            myLocation = UserLocation.convertFromLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+            myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -187,7 +124,7 @@ public class SuggestedParcelsFragment extends Fragment {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
                 if (Build.VERSION.SDK_INT >= 23 && getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    myLocation = UserLocation.convertFromLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+                    myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 } else {
                     myLocation = null;
                     Toast.makeText(getContext(), "Until you grant the permission, we cannot display the location", Toast.LENGTH_SHORT).show();

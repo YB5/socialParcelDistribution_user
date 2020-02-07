@@ -31,4 +31,7 @@ public class UserParcelsViewModel extends AndroidViewModel {
     public void updateParcels(Parcel parcel) {
         parcelRepository.updateParcel(parcel);
     }
+    public void arrivedParcel(Parcel parcel) {
+        parcelRepository.arrivedParcel(parcel);
+    }
 }

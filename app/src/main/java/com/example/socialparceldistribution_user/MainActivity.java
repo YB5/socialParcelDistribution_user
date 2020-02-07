@@ -1,5 +1,6 @@
 package com.example.socialparceldistribution_user;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    final Intent intent = new Intent();
     private AppBarConfiguration mAppBarConfiguration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +63,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 FirebaseAuth.getInstance().signOut();
+                stopService(intent);
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
                 return true;
             }
         });
-        final Intent intent = new Intent(this, ParcelService.class);
+        intent.setComponent(new ComponentName( this, ParcelService.class));
         startService(intent);
     }
 
@@ -80,5 +83,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        stopService(intent);
+        FirebaseAuth.getInstance().signOut();
+        super.onBackPressed();
     }
 }

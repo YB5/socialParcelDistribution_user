@@ -1,7 +1,5 @@
 package com.example.socialparceldistribution_user.ui.user_parcels;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +27,13 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     private MyParcelsListener listener;
 
     interface MyParcelsListener {
-        void onVolunteerButtonClicked(int position, View view);
+        void onButtonClicked(int position, View view);
     }
 
     void setListener(MyParcelsListener listener){
         this.listener=listener;
     }
+
 
     class HistoryParcelViewHolder extends RecyclerView.ViewHolder{
 
@@ -46,7 +45,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         TextView date;
         TextView messengerName;
         Button seeSuggestions;
-
+Button setArrivedParcel;
         private HistoryParcelViewHolder(View itemView) {
             super(itemView);
 
@@ -63,9 +62,18 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                 public void onClick(View view) {
 
                     if (listener!=null)
-                        listener.onVolunteerButtonClicked(getAdapterPosition(),view);
+                        listener.onButtonClicked(getAdapterPosition(),view);
                 }
             });
+            setArrivedParcel= itemView.findViewById(R.id.bt_arrivedParcel);
+            setArrivedParcel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener!=null)
+                        listener.onButtonClicked(getAdapterPosition(),view);
+                }
+            });
+
         }
     }
     @NonNull

@@ -6,15 +6,17 @@ import com.example.socialparceldistribution_user.Entities.Parcel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.example.socialparceldistribution_user.Entities.Parcel.ParcelStatus.successfullyArrived;
 
 public class ParcelDataSource implements IParcelDataSource {
 
@@ -31,14 +33,15 @@ public class ParcelDataSource implements IParcelDataSource {
     }
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference parcels = firebaseDatabase.getReference("ExistingParcels");
+    DatabaseReference existingParcels = firebaseDatabase.getReference("ExistingParcels");
+    DatabaseReference historyParcels = firebaseDatabase.getReference("HistoryParcels");
 
 
     private ParcelDataSource() {
         allParcelsList = new ArrayList<>();
         myParcels.setValue(new ArrayList<Parcel>());
 
-        parcels.addValueEventListener(new ValueEventListener() {
+        existingParcels.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 allParcelsList.clear();
@@ -66,7 +69,7 @@ public class ParcelDataSource implements IParcelDataSource {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser()!=null){
                 String email = firebaseAuth.getCurrentUser().getEmail();
-                parcels.child(email.replace(".",",")).addValueEventListener(new ValueEventListener() {
+                existingParcels.child(email.replace(".",",")).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<Parcel> temp= new ArrayList<>();
@@ -96,11 +99,29 @@ public class ParcelDataSource implements IParcelDataSource {
         String id= parcel.getParcelId();
         HashMap map= new HashMap();
         map.put(id,parcel);
-        parcels.child(email.replace(".",",")).updateChildren(map);
+        existingParcels.child(email.replace(".",",")).updateChildren(map);
     }
 
     @Override
     public void arrivedParcel(Parcel parcel) {
+
+        parcel.setParcelStatus(successfullyArrived);
+        parcel.setArrivalDate(new Date());
+        historyParcels.child(parcel.getRecipientEmail().replace(".",",")).child(parcel.getParcelId()).setValue(parcel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    isSuccess.setValue(true);
+                    isSuccess.setValue(null);
+                }
+
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    isSuccess.setValue(false);
+                    isSuccess.setValue(null);
+                }
+            });
+        existingParcels.child(parcel.getRecipientEmail().replace(".",",")).child(parcel.getParcelId()).removeValue();
 
     }
 

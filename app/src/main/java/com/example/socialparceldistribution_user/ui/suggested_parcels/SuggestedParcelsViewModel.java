@@ -1,6 +1,7 @@
 package com.example.socialparceldistribution_user.ui.suggested_parcels;
 
 import android.app.Application;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -45,12 +46,12 @@ public class SuggestedParcelsViewModel extends AndroidViewModel {
     public List<Parcel> findRelevantParcels(String maxDistFromLocation, String maxDistFromDestination, Location myLocation, String destinationAddress) {
         List<Parcel> filteredList = new ArrayList<>();
         //if no filter determined:
-        if (maxDistFromDestination==null||maxDistFromDestination.isEmpty() &&
-                maxDistFromLocation==null||maxDistFromLocation.isEmpty())
+        if (maxDistFromDestination == null || maxDistFromDestination.isEmpty() &&
+                maxDistFromLocation == null || maxDistFromLocation.isEmpty())
             return parcels.getValue();
-        if (destinationAddress==null||destinationAddress.isEmpty())
+        if (destinationAddress == null || destinationAddress.isEmpty())
             return parcels.getValue();
-        if(myLocation==null)
+        if (myLocation == null)
             return new ArrayList<>();
 
         double maxFromLoc = Double.parseDouble(maxDistFromLocation);
@@ -91,4 +92,5 @@ public class SuggestedParcelsViewModel extends AndroidViewModel {
         }
         updateParcels(parcel);
     }
+
 }

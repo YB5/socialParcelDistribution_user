@@ -57,10 +57,17 @@ public class ParcelRepository implements IParcelRepository {
         return parcelDataSource.getIsSuccess();
     }
 
+    @Override
     public void updateParcel(Parcel parcel) {
         parcelDataSource.updateParcel(parcel);
     }
 
+    @Override
+    public void arrivedParcel(Parcel parcel) {
+        parcelDataSource.arrivedParcel(parcel);
+    }
+
+    @Override
     public LiveData<List<Parcel>> getMyParcels() {
         return parcelDataSource.getMyParcels();
     }

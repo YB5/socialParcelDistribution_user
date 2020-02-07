@@ -25,6 +25,7 @@ public class ParcelDataSource implements IParcelDataSource {
     List<Parcel> allParcelsList;
     MutableLiveData<List<Parcel>> myParcels= new MutableLiveData<>();
 
+    @Override
     public MutableLiveData<List<Parcel>> getMyParcels() {
         return myParcels;
     }
@@ -88,12 +89,19 @@ public class ParcelDataSource implements IParcelDataSource {
         });
 
     }
+
+    @Override
     public void updateParcel(Parcel parcel) {
         String email= parcel.getRecipientEmail();
         String id= parcel.getParcelId();
         HashMap map= new HashMap();
         map.put(id,parcel);
         parcels.child(email.replace(".",",")).updateChildren(map);
+    }
+
+    @Override
+    public void arrivedParcel(Parcel parcel) {
+
     }
 
     public interface parcelsChangedListener {

@@ -3,11 +3,12 @@
     package="com.example.socialparceldistribution_user">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--android:roundIcon="@mipmap/ic_launcher_round"
+    android:icon="@mipmap/ic_launcher"-->
     <application
         android:allowBackup="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:icon="@mipmap/ddb"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity

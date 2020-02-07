@@ -34,7 +34,7 @@
     <string name="cancellation">Cancellation of Volunteering</string>
     <string name="enter_phone">enter phone</string>
     <string name="seeSuggestions">see deliver suggestions</string>
-    <string name="arrivedParcel">parcel arrived - remove</string>
+    <string name="arrivedParcel">arrived - remove</string>
 </resources>
 
 

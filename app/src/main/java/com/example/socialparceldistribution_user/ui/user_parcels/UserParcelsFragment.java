@@ -68,7 +68,7 @@ public class UserParcelsFragment extends Fragment {
                 if(view.getId()==R.id.bt_arrivedParcel){
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("Confirm shutdown").setMessage("Are you sure you want to exit?")
+                    builder.setTitle("Is the package accepted?").setMessage("Clicking \"Yes\" will delete this parcel from the list. The details will be stored on the server.")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -126,7 +126,7 @@ public class UserParcelsFragment extends Fragment {
                         if(view.getId()==R.id.bt_arrivedParcel){
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                            builder.setTitle("Confirm shutdown").setMessage("Are you sure you want to exit?")
+                            builder.setTitle("Is the package accepted?").setMessage("Clicking \"Yes\" will delete this parcel from the list. The details will be stored on the server.")
                                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {

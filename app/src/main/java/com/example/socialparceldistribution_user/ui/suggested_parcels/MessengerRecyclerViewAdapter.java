@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialparceldistribution_user.Entities.Parcel;
 import com.example.socialparceldistribution_user.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -32,7 +30,7 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
     }
 
     interface SuggestedParcelsListener {
-        void onVolunteerButtonClicked(int position, View view);
+        void onButtonClicked(int position, View view);
     }
 
     void setListener(SuggestedParcelsListener listener){
@@ -49,6 +47,8 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
         TextView warehouseAddress;
         TextView date;
         final Button volunteer_bt;
+        final Button SMS_bt;
+        final Button mail_bt;
 
 
         private SuggestedParcelsViewHolder(View itemView) {
@@ -65,7 +65,25 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
                 @Override
                 public void onClick(View view) {
                     if (listener!=null)
-                        listener.onVolunteerButtonClicked(getAdapterPosition(),view);
+                        listener.onButtonClicked(getAdapterPosition(),view);
+                    //volunteer_bt.setText(R.string.cancellation);
+                }
+            });
+            SMS_bt=itemView.findViewById(R.id.bt_sendSMS);
+            SMS_bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener!=null)
+                        listener.onButtonClicked(getAdapterPosition(),view);
+                    //volunteer_bt.setText(R.string.cancellation);
+                }
+            });
+            mail_bt=itemView.findViewById(R.id.bt_sendMail);
+            mail_bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener!=null)
+                        listener.onButtonClicked(getAdapterPosition(),view);
                     //volunteer_bt.setText(R.string.cancellation);
                 }
             });

@@ -2,11 +2,13 @@ package com.example.socialparceldistribution_user.ui.suggested_parcels;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -46,8 +48,8 @@ public class SuggestedParcelsFragment extends Fragment {
     private Location myLocation;
     private LocationManager locationManager;
     private String userName;
-    String maxDistFromLocation;
-    String maxDistFromDestination;
+    private String maxDistFromLocation;
+    private String maxDistFromDestination;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final SuggestedParcelsViewModel viewModel = ViewModelProviders.of(this).get(SuggestedParcelsViewModel.class);
@@ -79,7 +81,7 @@ public class SuggestedParcelsFragment extends Fragment {
                 MessengerRecyclerViewAdapter suggestedParcelsAdapter = new MessengerRecyclerViewAdapter(parcelList, userName);
                 suggestedParcelsAdapter.setListener(new MessengerRecyclerViewAdapter.SuggestedParcelsListener() {
                     @Override
-                    public void onVolunteerButtonClicked(int position, View view) {
+                    public void onButtonClicked(int position, View view) {
                         viewModel.updateVolunteerState(position, userName);
                     }
                 });
@@ -90,15 +92,35 @@ public class SuggestedParcelsFragment extends Fragment {
 
         viewModel.getParcels().observe(getViewLifecycleOwner(), new Observer<List<Parcel>>() {
             @Override
-            public void onChanged(List<Parcel> parcels) {
+            public void onChanged(final List<Parcel> parcels) {
                 parcelList = viewModel.findRelevantParcels(maxDistFromLocation, maxDistFromDestination, myLocation, destinationAddress);
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 MessengerRecyclerViewAdapter suggestedParcelsAdapter = new MessengerRecyclerViewAdapter(parcelList, userName);
                 suggestedParcelsAdapter.setListener(new MessengerRecyclerViewAdapter.SuggestedParcelsListener() {
                     @Override
-                    public void onVolunteerButtonClicked(int position, View view) {
-                        viewModel.updateVolunteerState(position, userName);
+                    public void onButtonClicked(int position, View view) {
+                        if(view.getId()==R.id.bt_volunteer)
+                            viewModel.updateVolunteerState(position, userName);
+                        else if (view.getId() == R.id.bt_sendSMS) {
+                            String phone=parcels.get(position).getRecipientPhone();
+                            if (phone.isEmpty()) {
+                                Toast.makeText(getContext(), "no phone number exist", Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null)));
+                            }
+                        }
+                        else if (view.getId() == R.id.bt_sendMail) {
+                            String mail=parcels.get(position).getRecipientEmail();
+
+                            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                    "mailto",mail, null));
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                            emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
+                            startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                        }
+
                     }
                 });
                 recyclerView.setAdapter(suggestedParcelsAdapter);

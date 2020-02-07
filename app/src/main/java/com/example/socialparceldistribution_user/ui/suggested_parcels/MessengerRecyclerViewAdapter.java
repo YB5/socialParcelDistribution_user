@@ -48,7 +48,6 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
         TextView recipientAddress;
         TextView warehouseAddress;
         TextView date;
-        TextView messengerName;
         final Button volunteer_bt;
 
 
@@ -61,7 +60,6 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
             recipientAddress = itemView.findViewById(R.id.recipientAddressTv);
             warehouseAddress = itemView.findViewById(R.id.warehouseAddressTv);
             date = itemView.findViewById(R.id.date_tv);
-            messengerName = itemView.findViewById(R.id.messenger_name_tv);
             volunteer_bt=itemView.findViewById(R.id.bt_volunteer);
             volunteer_bt.setOnClickListener(new View.OnClickListener() {
                 @Override

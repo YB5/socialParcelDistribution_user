@@ -58,7 +58,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             recipientAddress = itemView.findViewById(R.id.recipientAddressTv);
             warehouseAddress = itemView.findViewById(R.id.warehouseAddressTv);
             date = itemView.findViewById(R.id.date_tv);
-            messengerName = itemView.findViewById(R.id.messenger_name_tv);
             seeSuggestions = itemView.findViewById(R.id.bt_see_suggestions);
             seeSuggestions.setOnClickListener(new View.OnClickListener() {
                 @Override

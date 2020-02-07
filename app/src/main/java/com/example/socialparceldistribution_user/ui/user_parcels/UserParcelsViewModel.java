@@ -15,7 +15,7 @@ import java.util.List;
 public class UserParcelsViewModel extends AndroidViewModel {
 
 
-    private List<Parcel> myParcels;
+    private LiveData<List<Parcel>> myParcels;
     private IParcelRepository parcelRepository;
 
     public UserParcelsViewModel(@NonNull Application application) {
@@ -25,8 +25,8 @@ public class UserParcelsViewModel extends AndroidViewModel {
 
     public LiveData<List<Parcel>> getMyParcels() {
         LiveData<List<Parcel>> listLiveData=  parcelRepository.getMyParcels();
-        myParcels = listLiveData.getValue();
-        return listLiveData;
+        myParcels = listLiveData;
+        return myParcels;
     }
 
     public void updateParcels(Parcel parcel) {

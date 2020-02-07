@@ -82,7 +82,6 @@ public class UserParcelsFragment extends Fragment {
                         }
                     })
                             .setCancelable(false).show();
-
                 }
             }
         });

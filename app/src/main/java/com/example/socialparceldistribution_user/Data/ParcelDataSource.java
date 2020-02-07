@@ -21,6 +21,7 @@ import static com.example.socialparceldistribution_user.Entities.Parcel.ParcelSt
 public class ParcelDataSource implements IParcelDataSource {
 
     private MutableLiveData<Boolean> isSuccess= new MutableLiveData<>();
+    @Override
     public MutableLiveData<Boolean> getIsSuccess() {
         return isSuccess;
     }
@@ -125,22 +126,25 @@ public class ParcelDataSource implements IParcelDataSource {
 
     }
 
-    public interface parcelsChangedListener {
-        void onParcelsChanged();
-    }
-    private parcelsChangedListener parcelsChangedListener;
-    public void setParcelsChangedListener(parcelsChangedListener l) {
+//    public interface parcelsChangedListener {
+//        void onParcelsChanged();
+//    }
+    private ParcelsChangedListener parcelsChangedListener;
+
+
+    public void setParcelsChangedListener(ParcelsChangedListener l) {
         parcelsChangedListener = l;
     }
 
-    public interface myParcelsChangedListener {
-        void onMyParcelsChanged();
-    }
-    private myParcelsChangedListener myParcelsChangedListener;
-    public void setMyParcelsChangedListener(myParcelsChangedListener l) {
+//    public interface myParcelsChangedListener {
+//        void onMyParcelsChanged();
+//    }
+    private MyParcelsChangedListener myParcelsChangedListener;
+    public void setMyParcelsChangedListener(MyParcelsChangedListener l) {
         myParcelsChangedListener = l;
     }
 
+    @Override
     public List<Parcel> getAllParcelsList() {
         return allParcelsList;
     }

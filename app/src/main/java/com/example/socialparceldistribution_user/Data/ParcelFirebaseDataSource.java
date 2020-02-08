@@ -18,7 +18,7 @@ import java.util.List;
 
 import static com.example.socialparceldistribution_user.Entities.Parcel.ParcelStatus.successfullyArrived;
 
-public class ParcelDataSource implements IParcelDataSource {
+public class ParcelFirebaseDataSource implements IParcelDataSource {
 
     private MutableLiveData<Boolean> isSuccess= new MutableLiveData<>();
     @Override
@@ -38,7 +38,7 @@ public class ParcelDataSource implements IParcelDataSource {
     DatabaseReference historyParcels = firebaseDatabase.getReference("HistoryParcels");
 
 
-    private ParcelDataSource() {
+    private ParcelFirebaseDataSource() {
         allParcelsList = new ArrayList<>();
         myParcels.setValue(new ArrayList<Parcel>());
 
@@ -149,11 +149,11 @@ public class ParcelDataSource implements IParcelDataSource {
         return allParcelsList;
     }
 
-    private static ParcelDataSource instance;
+    private static ParcelFirebaseDataSource instance;
 
-    public static ParcelDataSource getInstance() {
+    public static ParcelFirebaseDataSource getInstance() {
         if (instance == null)
-            instance = new ParcelDataSource();
+            instance = new ParcelFirebaseDataSource();
         return instance;
     }
 

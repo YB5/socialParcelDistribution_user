@@ -1,7 +1,6 @@
 package com.example.socialparceldistribution_user.ui.user_parcels;
 
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.socialparceldistribution_user.Data.ParcelDataSource;
 import com.example.socialparceldistribution_user.Entities.Parcel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -71,9 +69,9 @@ public class ParcelService extends Service {
 
             }
         });
-//        parcelDataSource = ParcelDataSource.getInstance();
+//        parcelDataSource = ParcelFirebaseDataSource.getInstance();
 //        //databaseHelper= new RoomDatabaseHelper(application.getApplicationContext());
-//        ParcelDataSource.parcelsChangedListener parcelsChangedListener = new ParcelDataSource.parcelsChangedListener() {
+//        ParcelFirebaseDataSource.parcelsChangedListener parcelsChangedListener = new ParcelFirebaseDataSource.parcelsChangedListener() {
 //            @Override
 //            public void onParcelsChanged() {
 //                if(true/*the parcel owner*/) {
@@ -85,7 +83,7 @@ public class ParcelService extends Service {
 //        };
 //        parcelDataSource.setParcelsChangedListener(parcelsChangedListener);
 //
-//        ParcelDataSource.get
+//        ParcelFirebaseDataSource.get
 
 
 

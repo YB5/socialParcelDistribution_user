@@ -12,7 +12,7 @@ public class RoomDatabaseHelper {
     private ParcelDao parcelDao;
 
     public RoomDatabaseHelper(Context context){
-        HistoryDataSource database=HistoryDataSource.getInstance(context);
+        RoomDataSource database= RoomDataSource.getInstance(context);
 
         parcelDao =database.getParcelDao();
         parcelDao.clear();

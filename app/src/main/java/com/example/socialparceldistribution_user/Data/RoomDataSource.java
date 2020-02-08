@@ -8,19 +8,18 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.socialparceldistribution_user.Entities.Parcel;
-import com.example.socialparceldistribution_user.ui.suggested_parcels.MessengerRecyclerViewAdapter;
 
 
 @Database(entities = Parcel.class, version = 1, exportSchema = false)
 @TypeConverters({Parcel.ParcelStatus.class, Parcel.ParcelType.class, Parcel.DateConverter.class, Parcel.UserLocationConverter.class, Parcel.MessengersConverter.class})
-public abstract class HistoryDataSource extends RoomDatabase {
+public abstract class RoomDataSource extends RoomDatabase {
 
     public static final String DATABASE_NAME="database.db";
-    private static HistoryDataSource database;
+    private static RoomDataSource database;
 
-    public static HistoryDataSource getInstance(Context context){
+    public static RoomDataSource getInstance(Context context){
         if (database==null)
-            database= Room.databaseBuilder(context,HistoryDataSource.class,DATABASE_NAME).allowMainThreadQueries().build();
+            database= Room.databaseBuilder(context, RoomDataSource.class,DATABASE_NAME).allowMainThreadQueries().build();
         return database;
     }
 

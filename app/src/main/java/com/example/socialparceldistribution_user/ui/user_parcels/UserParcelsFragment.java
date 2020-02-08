@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class UserParcelsFragment extends Fragment {
 
@@ -32,7 +29,7 @@ public class UserParcelsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         final UserParcelsViewModel viewModel = ViewModelProviders.of(this).get(UserParcelsViewModel.class);
-        View root = inflater.inflate(R.layout.history_parcels, container, false);
+        View root = inflater.inflate(R.layout.suggested_parcels, container, false);
 
         final RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -125,7 +122,7 @@ public class UserParcelsFragment extends Fragment {
                         if(view.getId()==R.id.bt_arrivedParcel){
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                            builder.setTitle("Is the package accepted?").setMessage("Clicking \"Yes\" will delete this parcel from the list. The details will be stored on the server.")
+                            builder.setTitle("Is the package arrived?").setMessage("Clicking \"Yes\" will delete this parcel from the list. The details will be stored on the server.")
                                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {

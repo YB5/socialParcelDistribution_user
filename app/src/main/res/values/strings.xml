@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">socialParcelDistribution_user</string>
+    <string name="app_name">DDB users</string>
     <string name="enter_full_name">enter full name</string>
     <string name="enter_password">enter password</string>
     <string name="enter_email">enter email</string>
@@ -10,7 +10,7 @@
     <string name="nav_header_title">DDB</string>
     <string name="nav_header_subtitle">If you come here anyway, why not take a parcel with you?</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_sign_out">Sign Out</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
@@ -23,8 +23,8 @@
     <string name="my_parcels">my parcels</string>
     <string name="sign_out">sign out</string>
     <string name="menu_suggested_parcels">suggested parcels</string>
-    <string name="menu_user_parcels">user parcels</string>
-    <string name="suggestOption">Volunteer to deliver the parcel</string>
+    <string name="menu_user_parcels">my parcels</string>
+    <string name="suggestOption">Volunteer to deliver this parcel</string>
     <string name="whereIWillGo">Where I will go?</string>
     <string name="enterDestinationAddress">enter destination address</string>
     <string name="maxDistFromCurrentLocation">max distance (in meters) from my location</string>

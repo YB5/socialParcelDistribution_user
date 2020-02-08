@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -26,16 +24,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialparceldistribution_user.Entities.Parcel;
-import com.example.socialparceldistribution_user.Entities.Person;
-import com.example.socialparceldistribution_user.Entities.UserLocation;
 import com.example.socialparceldistribution_user.R;
-import com.example.socialparceldistribution_user.ui.user_parcels.UserRecyclerViewAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SuggestedParcelsFragment extends Fragment {

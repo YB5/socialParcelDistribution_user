@@ -155,7 +155,7 @@
             android:layout_marginTop="10dp">
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="start">
             <Button
@@ -170,14 +170,18 @@
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/ic_message_black_24dp"
                 android:id="@+id/bt_sendSMS"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="@string/suggestOption"
+                    android:textSize="10sp"
+                    android:gravity="center"
+                    android:id="@+id/bt_volunteer"/>
+
             </LinearLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="@string/suggestOption"
-                android:textSize="10sp"
-                android:id="@+id/bt_volunteer"/>
+
 
         </LinearLayout>
 

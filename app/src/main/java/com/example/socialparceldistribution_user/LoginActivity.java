@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.Random;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final SharedPreferences sharedPreferences =getPreferences(MODE_PRIVATE);
-        final SharedPreferences.Editor editor= sharedPreferences.edit();
+        final SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
 
         firebaseAuth = FirebaseAuth.getInstance();
         fullNameEt = findViewById(R.id.et_full_name);
@@ -53,11 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         final LinearLayout linearLayout = findViewById(R.id.container);
 
 
-        emailEt.setText(sharedPreferences.getString("email",""));
-        passwordEt.setText(sharedPreferences.getString("password",""));
-
-
-
+        emailEt.setText(sharedPreferences.getString("email", ""));
+        passwordEt.setText(sharedPreferences.getString("password", ""));
 
 
         signUp_bt.setOnClickListener(new View.OnClickListener() {
@@ -67,8 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "input is not valid, try again", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (fullNameEt.getText().toString().isEmpty())
-                {
+                if (fullNameEt.getText().toString().isEmpty()) {
                     Toast.makeText(LoginActivity.this, "please enter full name", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -80,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            editor.putString("email",email).putString("password",password).commit();
+                            editor.putString("email", email).putString("password", password).commit();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("username", fullName);
                             startActivity(intent);
@@ -104,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            editor.putString("email",email).putString("password",password).commit();
+                            editor.putString("email", email).putString("password", password).commit();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("username", firebaseAuth.getCurrentUser().getDisplayName());
                             startActivity(intent);
@@ -120,8 +117,26 @@ public class LoginActivity extends AppCompatActivity {
         quickEntering.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int max = 3;
+                int min = 1;
+                Random r = new Random();
+                int choose = r.nextInt((max - min) + 1) + min;
                 passwordEt.setText("123456");
-                emailEt.setText("uriya@gmail.com");
+
+                switch (choose) {
+                    case 1:
+                        emailEt.setText("uriya@gmail.com");
+                        break;
+                    case 2:
+                        emailEt.setText("yaakovbrin@gmail.com");
+                        break;
+                    case 3:
+                        emailEt.setText("uriyaas@gmail.com");
+                        break;
+                    default:
+                        emailEt.setText("uriya@gmail.com");
+                        break;
+                }
             }
         });
 

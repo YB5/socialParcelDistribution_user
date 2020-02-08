@@ -5,7 +5,6 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 
 import com.example.socialparceldistribution_user.Entities.Parcel;
@@ -19,7 +18,7 @@ public class ParcelRepository implements IParcelRepository {
     RoomDatabaseHelper databaseHelper;
 
     private ParcelRepository(Application application) {
-        parcelDataSource = ParcelDataSource.getInstance();
+        parcelDataSource = ParcelFirebaseDataSource.getInstance();
         databaseHelper = new RoomDatabaseHelper(application.getApplicationContext());
 
         IParcelDataSource.ParcelsChangedListener parcelsChangedListener = new IParcelDataSource.ParcelsChangedListener() {

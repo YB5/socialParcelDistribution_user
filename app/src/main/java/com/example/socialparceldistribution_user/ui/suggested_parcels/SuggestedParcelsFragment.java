@@ -43,6 +43,7 @@ public class SuggestedParcelsFragment extends Fragment {
     private String maxDistFromLocation;
     private String maxDistFromDestination;
     private SuggestedParcelsViewModel viewModel;
+    final int LOCATION_PERMISSION = 1;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(this).get(SuggestedParcelsViewModel.class);
@@ -126,17 +127,16 @@ public class SuggestedParcelsFragment extends Fragment {
 
 
     private void getLocation() {
-        final int Location_PERMISSION = 1;
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Location_PERMISSION);
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION);
         } else
             myLocation = viewModel.getLocation();
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 5) {
+        if (requestCode == LOCATION_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
                 if (Build.VERSION.SDK_INT >= 23 && getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

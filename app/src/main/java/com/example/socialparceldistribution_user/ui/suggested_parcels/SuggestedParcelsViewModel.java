@@ -63,7 +63,6 @@ public class SuggestedParcelsViewModel extends AndroidViewModel {
         double maxFromLoc = Double.parseDouble(maxDistFromLocation);
         double maxFromDest = Double.parseDouble(maxDistFromDestination);
 
-
         UserLocation myUserLocation = UserLocation.convertFromLocation(myLocation);
         UserLocation destUserLocation;
         try {
@@ -101,7 +100,6 @@ public class SuggestedParcelsViewModel extends AndroidViewModel {
     }
 
     public Location getLocation() {
-        final int Location_PERMISSION = 1;
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 getApplication().getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

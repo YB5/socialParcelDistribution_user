@@ -66,8 +66,12 @@ public class SuggestedParcelsFragment extends Fragment {
                 maxDistFromDestination = maxDistanceFromDestination.getText().toString();
                 //check for permissions and call getLocation at view model
                 getLocation();
+                if (myLocation==null)
+                    Toast.makeText(getContext(),"please turn on the gps",Toast.LENGTH_LONG).show();
 
                 parcelList = viewModel.findRelevantParcels(maxDistFromLocation, maxDistFromDestination, myLocation, destinationAddress);
+                if (parcelList.isEmpty())
+                    Toast.makeText(getContext(),"no parcels appropriate",Toast.LENGTH_LONG).show();
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 MessengerRecyclerViewAdapter suggestedParcelsAdapter = new MessengerRecyclerViewAdapter(parcelList, userName);

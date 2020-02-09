@@ -21,22 +21,18 @@ import static com.example.socialparceldistribution_user.Entities.Parcel.ParcelSt
 public class ParcelFirebaseDataSource implements IParcelDataSource {
 
     private MutableLiveData<Boolean> isSuccess= new MutableLiveData<>();
-    @Override
-    public MutableLiveData<Boolean> getIsSuccess() {
-        return isSuccess;
+    private List<Parcel> allParcelsList;
+    private MutableLiveData<List<Parcel>> myParcels= new MutableLiveData<>();
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference existingParcels = firebaseDatabase.getReference("ExistingParcels");
+    private DatabaseReference historyParcels = firebaseDatabase.getReference("HistoryParcels");
+
+    private static ParcelFirebaseDataSource instance;
+    public static ParcelFirebaseDataSource getInstance() {
+        if (instance == null)
+            instance = new ParcelFirebaseDataSource();
+        return instance;
     }
-    List<Parcel> allParcelsList;
-    MutableLiveData<List<Parcel>> myParcels= new MutableLiveData<>();
-
-    @Override
-    public MutableLiveData<List<Parcel>> getMyParcels() {
-        return myParcels;
-    }
-
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference existingParcels = firebaseDatabase.getReference("ExistingParcels");
-    DatabaseReference historyParcels = firebaseDatabase.getReference("HistoryParcels");
-
 
     private ParcelFirebaseDataSource() {
         allParcelsList = new ArrayList<>();
@@ -64,7 +60,6 @@ public class ParcelFirebaseDataSource implements IParcelDataSource {
         });
 
         FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
-
         firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -92,6 +87,16 @@ public class ParcelFirebaseDataSource implements IParcelDataSource {
             }
         });
 
+    }
+
+    @Override
+    public MutableLiveData<Boolean> getIsSuccess() {
+        return isSuccess;
+    }
+
+    @Override
+    public MutableLiveData<List<Parcel>> getMyParcels() {
+        return myParcels;
     }
 
     @Override
@@ -126,19 +131,12 @@ public class ParcelFirebaseDataSource implements IParcelDataSource {
 
     }
 
-//    public interface parcelsChangedListener {
-//        void onParcelsChanged();
-//    }
     private ParcelsChangedListener parcelsChangedListener;
-
 
     public void setParcelsChangedListener(ParcelsChangedListener l) {
         parcelsChangedListener = l;
     }
 
-//    public interface myParcelsChangedListener {
-//        void onMyParcelsChanged();
-//    }
     private MyParcelsChangedListener myParcelsChangedListener;
     public void setMyParcelsChangedListener(MyParcelsChangedListener l) {
         myParcelsChangedListener = l;
@@ -148,17 +146,6 @@ public class ParcelFirebaseDataSource implements IParcelDataSource {
     public List<Parcel> getAllParcelsList() {
         return allParcelsList;
     }
-
-    private static ParcelFirebaseDataSource instance;
-
-    public static ParcelFirebaseDataSource getInstance() {
-        if (instance == null)
-            instance = new ParcelFirebaseDataSource();
-        return instance;
-    }
-
-
-
 }
 
 

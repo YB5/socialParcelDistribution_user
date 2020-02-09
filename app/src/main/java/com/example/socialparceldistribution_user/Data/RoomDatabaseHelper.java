@@ -13,7 +13,6 @@ public class RoomDatabaseHelper {
 
     public RoomDatabaseHelper(Context context){
         RoomDataSource database= RoomDataSource.getInstance(context);
-
         parcelDao =database.getParcelDao();
         parcelDao.clear();
     }

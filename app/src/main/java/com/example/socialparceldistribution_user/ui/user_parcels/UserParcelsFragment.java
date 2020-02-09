@@ -6,17 +6,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.socialparceldistribution_user.Entities.Parcel;
 import com.example.socialparceldistribution_user.R;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,7 +27,6 @@ public class UserParcelsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         final UserParcelsViewModel viewModel = ViewModelProviders.of(this).get(UserParcelsViewModel.class);
         View root = inflater.inflate(R.layout.suggested_parcels, container, false);
-
         final RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -55,30 +51,18 @@ public class UserParcelsFragment extends Fragment {
                             parcel.getMessengers().put(keys[which], isChecked);
                             viewModel.updateParcels(parcel);
                         }
-                    }).setPositiveButton("finish", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    }).show();
+                    }).setPositiveButton("finish", null).show();
                 }
 
-                if(view.getId()==R.id.bt_arrivedParcel){
-
+                if (view.getId() == R.id.bt_arrivedParcel) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("Is the package accepted?").setMessage("Clicking \"Yes\" will delete this parcel from the list. The details will be stored on the server.")
+                    builder.setTitle("Is the package arrived?").setMessage("Clicking \"Yes\" will delete this parcel from the list. The details will be stored on the server.")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     viewModel.arrivedParcel(myParcelsList.get(position));
-
                                 }
-                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                            .setCancelable(false).show();
+                            }).setNegativeButton("No", null).setCancelable(false).show();
                 }
             }
         });
@@ -118,8 +102,7 @@ public class UserParcelsFragment extends Fragment {
                                 }
                             }).show();
                         }
-
-                        if(view.getId()==R.id.bt_arrivedParcel){
+                        if (view.getId() == R.id.bt_arrivedParcel) {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                             builder.setTitle("Is the package arrived?").setMessage("Clicking \"Yes\" will delete this parcel from the list. The details will be stored on the server.")
@@ -129,24 +112,13 @@ public class UserParcelsFragment extends Fragment {
                                             viewModel.arrivedParcel(myParcelsList.get(position));
 
                                         }
-                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            })
-                                    .setCancelable(false).show();
-
+                                    }).setNegativeButton("No", null).setCancelable(false).show();
                         }
                     }
                 });
-
-
                 recyclerView.setAdapter(myParcelsAdapter);
             }
         });
-
-
         return root;
     }
 }

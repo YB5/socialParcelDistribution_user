@@ -13,14 +13,19 @@ import java.util.List;
 
 public class ParcelRepository implements IParcelRepository {
 
-    MutableLiveData<List<Parcel>> mutableLiveData = new MutableLiveData<>();
-    IParcelDataSource parcelDataSource;
-    RoomDatabaseHelper databaseHelper;
+    private MutableLiveData<List<Parcel>> mutableLiveData = new MutableLiveData<>();
+    private IParcelDataSource parcelDataSource;
+    private RoomDatabaseHelper databaseHelper;
+    private static ParcelRepository instance;
+    public static ParcelRepository getInstance(Application application) {
+        if (instance == null)
+            instance = new ParcelRepository(application);
+        return instance;
+    }
 
     private ParcelRepository(Application application) {
         parcelDataSource = ParcelFirebaseDataSource.getInstance();
         databaseHelper = new RoomDatabaseHelper(application.getApplicationContext());
-
         IParcelDataSource.ParcelsChangedListener parcelsChangedListener = new IParcelDataSource.ParcelsChangedListener() {
             @Override
             public void onParcelsChanged() {
@@ -32,14 +37,6 @@ public class ParcelRepository implements IParcelRepository {
             }
         };
         parcelDataSource.setParcelsChangedListener(parcelsChangedListener);
-    }
-
-    private static ParcelRepository instance;
-
-    public static ParcelRepository getInstance(Application application) {
-        if (instance == null)
-            instance = new ParcelRepository(application);
-        return instance;
     }
 
     @Override

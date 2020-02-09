@@ -89,7 +89,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull HistoryParcelViewHolder holder, int position) {
         Parcel parcel = parcels.get(position);
-        //holder.messengerName.setText(parcel.getMessengers().isEmpty()?"no messenger": parcel.getMessengerName()+"");
         holder.date.setText(parcel.getDeliveryDate() == null ? "no date" : format.format(parcel.getDeliveryDate()));
         holder.recipientAddress.setText(parcel.getRecipientAddress().isEmpty() ? "no recipient address" : parcel.getRecipientAddress());
         holder.warehouseAddress.setText(parcel.getWarehouseAddress().isEmpty() ? "no warehouse address" : parcel.getRecipientAddress());

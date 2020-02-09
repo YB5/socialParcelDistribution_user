@@ -66,7 +66,6 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
                 public void onClick(View view) {
                     if (listener!=null)
                         listener.onButtonClicked(getAdapterPosition(),view);
-                    //volunteer_bt.setText(R.string.cancellation);
                 }
             });
             SMS_bt=itemView.findViewById(R.id.bt_sendSMS);
@@ -75,7 +74,6 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
                 public void onClick(View view) {
                     if (listener!=null)
                         listener.onButtonClicked(getAdapterPosition(),view);
-                    //volunteer_bt.setText(R.string.cancellation);
                 }
             });
             mail_bt=itemView.findViewById(R.id.bt_sendMail);
@@ -84,7 +82,6 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
                 public void onClick(View view) {
                     if (listener!=null)
                         listener.onButtonClicked(getAdapterPosition(),view);
-                    //volunteer_bt.setText(R.string.cancellation);
                 }
             });
         }

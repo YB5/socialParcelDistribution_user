@@ -1,11 +1,15 @@
 package com.example.socialparceldistribution_user.ui.suggested_parcels;
 
+import android.Manifest;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,11 +31,13 @@ public class SuggestedParcelsViewModel extends AndroidViewModel {
     private LiveData<List<Parcel>> parcels;
     private IParcelRepository parcelRepository;
     private Geocoder geocoder;
+    private LocationManager locationManager;
 
     public SuggestedParcelsViewModel(@NonNull Application application) {
         super(application);
         parcelRepository = ParcelRepository.getInstance(application);
         geocoder = new Geocoder(application);
+        locationManager = (LocationManager) getApplication().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
     public LiveData<List<Parcel>> getParcels() {
@@ -56,6 +62,7 @@ public class SuggestedParcelsViewModel extends AndroidViewModel {
 
         double maxFromLoc = Double.parseDouble(maxDistFromLocation);
         double maxFromDest = Double.parseDouble(maxDistFromDestination);
+
 
         UserLocation myUserLocation = UserLocation.convertFromLocation(myLocation);
         UserLocation destUserLocation;
@@ -91,6 +98,18 @@ public class SuggestedParcelsViewModel extends AndroidViewModel {
                 parcel.getMessengers().put(userName, false);
         }
         updateParcels(parcel);
+    }
+
+    public Location getLocation() {
+        final int Location_PERMISSION = 1;
+        // Check the SDK version and whether the permission is already granted or not.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                getApplication().getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
+        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        else return null;
     }
 
 }

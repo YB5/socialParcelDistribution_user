@@ -42,10 +42,10 @@ public class SuggestedParcelsFragment extends Fragment {
     private String userName;
     private String maxDistFromLocation;
     private String maxDistFromDestination;
+    private SuggestedParcelsViewModel viewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final SuggestedParcelsViewModel viewModel = ViewModelProviders.of(this).get(SuggestedParcelsViewModel.class);
-
+        viewModel = ViewModelProviders.of(this).get(SuggestedParcelsViewModel.class);
         View root = inflater.inflate(R.layout.parcels_to_deliver, container, false);
         destinationEt = root.findViewById(R.id.dest_address_et);
         maxDistanceFromDestination = root.findViewById(R.id.maxFromDestination);
@@ -64,7 +64,7 @@ public class SuggestedParcelsFragment extends Fragment {
                 }
                 maxDistFromLocation = maxDistanceFromMyLocation.getText().toString();
                 maxDistFromDestination = maxDistanceFromDestination.getText().toString();
-                locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                //check for permissions and call getLocation at view model
                 getLocation();
 
                 parcelList = viewModel.findRelevantParcels(maxDistFromLocation, maxDistFromDestination, myLocation, destinationAddress);
@@ -78,7 +78,6 @@ public class SuggestedParcelsFragment extends Fragment {
                     }
                 });
                 recyclerView.setAdapter(suggestedParcelsAdapter);
-
             }
         });
 
@@ -118,7 +117,6 @@ public class SuggestedParcelsFragment extends Fragment {
                 recyclerView.setAdapter(suggestedParcelsAdapter);
             }
         });
-
         return root;
     }
 
@@ -130,7 +128,7 @@ public class SuggestedParcelsFragment extends Fragment {
                 getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Location_PERMISSION);
         } else
-            myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            myLocation = viewModel.getLocation();
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -138,7 +136,7 @@ public class SuggestedParcelsFragment extends Fragment {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
                 if (Build.VERSION.SDK_INT >= 23 && getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    myLocation = viewModel.getLocation();
                 } else {
                     myLocation = null;
                     Toast.makeText(getContext(), "Until you grant the permission, we cannot display the location", Toast.LENGTH_SHORT).show();

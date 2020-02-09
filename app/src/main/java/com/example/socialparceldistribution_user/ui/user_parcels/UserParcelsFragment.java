@@ -66,9 +66,7 @@ public class UserParcelsFragment extends Fragment {
                 }
             }
         });
-
         recyclerView.setAdapter(myParcelsAdapter);
-
 
         viewModel.getMyParcels().observe(getViewLifecycleOwner(), new Observer<List<Parcel>>() {
             @Override

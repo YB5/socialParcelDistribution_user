@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.socialparceldistribution_user.Data.IParcelRepository;
 import com.example.socialparceldistribution_user.Data.ParcelRepository;
@@ -29,15 +30,21 @@ import java.util.List;
 public class SuggestedParcelsViewModel extends AndroidViewModel {
 
     private LiveData<List<Parcel>> parcels;
+    private MutableLiveData<List<Parcel>> filteredParcelList;
     private IParcelRepository parcelRepository;
     private Geocoder geocoder;
     private LocationManager locationManager;
+    private String maxDistFromLocation;
+    private String maxDistFromDestination;
+    private Location myLocation;
+    private String destinationAddress;
 
     public SuggestedParcelsViewModel(@NonNull Application application) {
         super(application);
         parcelRepository = ParcelRepository.getInstance(application);
         geocoder = new Geocoder(application);
         locationManager = (LocationManager) getApplication().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        filteredParcelList = new MutableLiveData<>();
     }
 
     public LiveData<List<Parcel>> getParcels() {
@@ -45,45 +52,55 @@ public class SuggestedParcelsViewModel extends AndroidViewModel {
         return parcels;
     }
 
+    public MutableLiveData<List<Parcel>> getFilteredParcelList() { return filteredParcelList; }
+
     public void updateParcels(Parcel parcel) {
         parcelRepository.updateParcel(parcel);
     }
 
-    public List<Parcel> findRelevantParcels(String maxDistFromLocation, String maxDistFromDestination, Location myLocation, String destinationAddress) {
-        List<Parcel> filteredList = new ArrayList<>();
+    public void findRelevantParcels() {
         //if no filter determined:
         if (maxDistFromDestination == null || maxDistFromDestination.isEmpty() &&
-                maxDistFromLocation == null || maxDistFromLocation.isEmpty())
-            return parcels.getValue();
-        if (destinationAddress == null || destinationAddress.isEmpty())
-            return parcels.getValue();
-        if (myLocation == null)
-            return new ArrayList<>();
-
+                maxDistFromLocation == null || maxDistFromLocation.isEmpty()) {
+            filteredParcelList.setValue(parcels.getValue());
+            return;
+        }
+        //if destination address line is empty
+        if (destinationAddress == null || destinationAddress.isEmpty()) {
+            filteredParcelList.setValue(parcels.getValue());
+            return;
+        }
+        //if my location is null
+        if (myLocation == null) {
+            filteredParcelList.setValue(null);
+            return;
+        }
         double maxFromLoc = Double.parseDouble(maxDistFromLocation);
         double maxFromDest = Double.parseDouble(maxDistFromDestination);
-
         UserLocation myUserLocation = UserLocation.convertFromLocation(myLocation);
         UserLocation destUserLocation;
         try {
             List<Address> addressList = geocoder.getFromLocationName(destinationAddress, 1);
-            if (addressList == null || addressList.isEmpty())
-                return new ArrayList<>();
+            if (addressList == null || addressList.isEmpty()) {
+                filteredParcelList.setValue(null);
+                return;
+            }
             destUserLocation = new UserLocation(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
         } catch (IOException e) {
-            return new ArrayList<>();
+            filteredParcelList.setValue(null);
+            return;
         }
-
+        List<Parcel> temp= new ArrayList<>();
         if (parcels.getValue() != null) {
             for (Parcel p : parcels.getValue())
                 if (p.getWarehouseUserLocation().airDistanceInMeters_to(myUserLocation) < maxFromLoc &&
                         p.getRecipientUserLocation().airDistanceInMeters_to(destUserLocation) < maxFromDest)
-                    filteredList.add(p);
+                    temp.add(p);
         }
-        return filteredList;
+        filteredParcelList.setValue(temp);
     }
 
-    public void updateVolunteerState(int position, String userName) {
+    void updateVolunteerState(int position, String userName) {
         Parcel parcel = parcels.getValue().get(position);
         if (parcel.getMessengers() == null) {
             HashMap hashMap = new HashMap();
@@ -99,15 +116,30 @@ public class SuggestedParcelsViewModel extends AndroidViewModel {
         updateParcels(parcel);
     }
 
-    public Location getLocation() {
+    Location getLocation() {
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 getApplication().getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         else return null;
+    }
+
+    void setMaxDistFromLocation(String maxDistFromLocation) {
+        this.maxDistFromLocation = maxDistFromLocation;
+    }
+
+    void setMaxDistFromDestination(String maxDistFromDestination) {
+        this.maxDistFromDestination = maxDistFromDestination;
+    }
+
+    void setMyLocation(Location myLocation) {
+        this.myLocation = myLocation;
+    }
+
+    void setDestinationAddress(String destinationAddress) {
+        this.destinationAddress = destinationAddress;
     }
 
 }

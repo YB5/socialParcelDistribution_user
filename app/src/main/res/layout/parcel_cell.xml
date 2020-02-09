@@ -28,61 +28,58 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="name: "
-                    android:textSize="15sp"/>
 
                     <TextView
-                    android:id="@+id/recipient_name_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:text="name: "
+                        android:textSize="15sp" />
 
-                    android:text="name"
-                    android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/recipient_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="name"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="from: "
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/warehouseAddressTv"
-                        android:text="warehouse address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="warehouse address"
                         android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="to: "
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/recipientAddressTv"
-                        android:text="recipient address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="recipient address"
                         android:textSize="15sp" />
                 </LinearLayout>
-
-
-
-
-
-
-
 
 
             </LinearLayout>
@@ -90,57 +87,60 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="20dp">
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="status: "
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/status_tv"
-                        android:text="status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="status"
                         android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="type: "
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/type_tv"
-                        android:text="type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="type"
                         android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="at: "
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/date_tv"
-                        android:text="date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="date"
                         android:textSize="15sp" />
                 </LinearLayout>
 
@@ -150,31 +150,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             android:gravity="end"
-            android:layout_marginTop="10dp">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/bt_see_suggestions"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:gravity="center"
                 android:layout_gravity="start|center"
                 android:background="#fff"
+                android:gravity="center"
                 android:text="@string/seeSuggestions"
-                android:textSize="10sp"
-               />
+                android:textSize="10sp" />
 
             <Button
                 android:id="@+id/bt_arrivedParcel"
                 android:layout_width="100dp"
-                android:background="#FF00FF00"
                 android:layout_height="30dp"
                 android:layout_gravity="end|center"
                 android:layout_marginStart="10dp"
+                android:background="#FF00FF00"
                 android:text="@string/arrivedParcel"
-                android:textSize="10sp"
-                />
+                android:textSize="10sp" />
 
         </LinearLayout>
 
